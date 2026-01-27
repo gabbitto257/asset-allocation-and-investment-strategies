@@ -1,0 +1,3258 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Assignment-1}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    \usepackage[utf-8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\setmainfont{Liberation Serif}
+\setsansfont{Liberation Sans}
+\setmonofont{Liberation Mono}
+
+\title{}
+\author{}
+\date{}
+\makeatletter
+\renewcommand{\maketitle}{}
+\makeatother
+
+\thispagestyle{empty}
+
+\begin{center}
+\vspace*{4cm}
+
+{\LARGE Asset Allocation \& Investment Strategies \\[0.5cm]}
+
+Academic year: 2025--2026\\[1.5cm]
+
+Group 8\\[0.3cm]
+Sacha Mimoun\\
+Isabelle Chuah\\
+Victor Lotigie\\
+Evelyn Wang\\
+Bolun Tian\\[1.5cm]
+
+\textit{Imperial College Business School}
+
+\end{center}
+
+\newpage
+    \setcounter{secnumdepth}{0}
+
+    \thispagestyle{empty}
+\clearpage
+
+\tableofcontents
+
+\newpage
+
+    \hypertarget{question-1-return-statistics-and-gaussian-i.i.d.-assumption}{%
+\subsection{Question 1 -- Return statistics and Gaussian i.i.d.
+assumption}\label{question-1-return-statistics-and-gaussian-i.i.d.-assumption}}
+
+    In this first question, we start from the raw Excel file
+\texttt{PS1\_data.xls}, which contains both equity index prices and FX
+rates. The idea is to clean the data, put everything in a common
+currency (USD), and then look at the main properties of daily log
+returns.
+
+More precisely, we:
+
+\begin{itemize}
+  \item build USD price series for each equity index using the FX block,
+  \item compute daily log returns,
+  \item compute basic statistics (mean, standard deviation, skewness, kurtosis, autocorrelation),
+  \item look at the cross-sectional correlation matrix,
+  \item and check how far these returns are from an i.i.d.\ Gaussian process.
+\end{itemize}
+
+All of this will give us a first feeling for how ``well-behaved'\,' the
+data are before we plug them into the mean--variance machinery in
+Questions\textasciitilde2 and\textasciitilde3.
+
+    \hypertarget{imports-and-basic-setup}{%
+\subsubsection{1.1 Imports and basic
+setup}\label{imports-and-basic-setup}}
+
+We begin by importing the main libraries we will use throughout the
+notebook:
+
+\begin{itemize}
+    \item \texttt{numpy} for numerical computations,
+    \item \texttt{pandas} to manage the time series of prices and returns,
+    \item \texttt{matplotlib} for plotting.
+\end{itemize}
+
+We also import several functions from \texttt{scipy.stats} and
+\texttt{statsmodels}:
+
+\begin{itemize}
+    \item \texttt{norm} to work with the Gaussian distribution (for example to build normal-theory confidence intervals),
+    \item \texttt{skew} and \texttt{kurtosis} to measure higher moments of the return distribution,
+    \item \texttt{acorr\_ljungbox} to run Ljung--Box tests for autocorrelation,
+    \item \texttt{jarque\_bera} to test the normality of returns.
+\end{itemize}
+
+These tools will be reused later when we move from basic return
+diagnostics to the mean--variance analysis.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{pandas}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{pd}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{norm}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{skew}\PY{p}{,} \PY{n}{kurtosis}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{n+nn}{.}\PY{n+nn}{diagnostic}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{acorr\PYZus{}ljungbox}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{jarque\PYZus{}bera}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{loading-the-equity-index-price-data}{%
+\subsubsection{1.2 Loading the equity index price
+data}\label{loading-the-equity-index-price-data}}
+
+We now load the Excel file \texttt{PS1\_data.xls}. The sheet has
+multi-row headers, so we first read it without specifying any header and
+then search for the row that contains the column \texttt{"date"}. Once
+we have found that row, we reload the file using it as the header.
+
+We then:
+
+\begin{itemize}
+    \item standardise the column names,
+    \item keep only the eight equity indices given in the assignment (TSX, CAC, DAX, Eurostoxx50,
+    Nikkei225, FTSE100, S\&P 500, Ibovespa),
+    \item parse the dates properly,
+    \item and clean the price columns to make sure they are stored as numeric values (handling
+    the European decimal notation if needed).
+\end{itemize}
+
+For the moment these are \textbf{local-currency prices}; in the next
+step we will bring everything to USD using the FX block.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{FILE} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{PS1\PYZus{}data.xls}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{c+c1}{\PYZsh{} Load the raw sheet without headers because the file uses several header rows}
+\PY{n}{raw} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}excel}\PY{p}{(}\PY{n}{FILE}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Try to find which row actually contains the header with \PYZdq{}date\PYZdq{}}
+\PY{n}{header\PYZus{}row} \PY{o}{=} \PY{k+kc}{None}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{30}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{raw}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} we only look at the top part of the file}
+    \PY{n}{row} \PY{o}{=} \PY{n}{raw}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{str}\PY{p}{)}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}
+    \PY{k}{if} \PY{n}{row}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{contains}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{any}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{header\PYZus{}row} \PY{o}{=} \PY{n}{i}
+        \PY{k}{break}
+
+\PY{k}{if} \PY{n}{header\PYZus{}row} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} If this ever happens, the layout of the Excel file is not what we expect}
+    \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Header row with }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{date}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ not found. Did the Excel file go on holiday???}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Reload the data using the detected header row}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}excel}\PY{p}{(}\PY{n}{FILE}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{n}{header\PYZus{}row}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Clean column names a bit (remove extra spaces)}
+\PY{n}{df}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{n+nb}{str}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Indices we want to keep}
+\PY{n}{price\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{TSX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CAC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Eurostoxx50}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+              \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NIKKEI225}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FTSE100}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IBOVESPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Match expected names with actual columns (in case of small naming differences)}
+\PY{n}{available} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{c}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{:} \PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{\PYZcb{}}
+\PY{n}{mapped\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{price\PYZus{}cols}\PY{p}{:}
+    \PY{k}{if} \PY{n}{c}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)} \PY{o+ow}{in} \PY{n}{available}\PY{p}{:}
+        \PY{n}{mapped\PYZus{}cols}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{available}\PY{p}{[}\PY{n}{c}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Missing expected column: }\PY{l+s+si}{\PYZob{}}\PY{n}{c}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{. }\PY{l+s+s2}{\PYZdq{}}
+                         \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Columns found: }\PY{l+s+si}{\PYZob{}}\PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ ...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Parse the date column (assume day\PYZhy{}month\PYZhy{}year format based on inspection of the raw file)}
+\PY{n}{date\PYZus{}col} \PY{o}{=} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{n+nb}{str}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{df}\PY{p}{[}\PY{n}{date\PYZus{}col}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{n}{date\PYZus{}col}\PY{p}{]}\PY{p}{,} \PY{n}{dayfirst}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We build the local\PYZhy{}price DataFrame}
+\PY{n}{prices\PYZus{}local} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{p}{[}\PY{n}{date\PYZus{}col}\PY{p}{]} \PY{o}{+} \PY{n}{mapped\PYZus{}cols}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{prices\PYZus{}local} \PY{o}{=} \PY{n}{prices\PYZus{}local}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{date\PYZus{}col}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}index}\PY{p}{(}\PY{n}{date\PYZus{}col}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We keep columns in the desired order}
+\PY{n}{prices\PYZus{}local} \PY{o}{=} \PY{n}{prices\PYZus{}local}\PY{p}{[}\PY{n}{price\PYZus{}cols}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} We fix potential European decimal formats (\PYZdq{}13165,5\PYZdq{} → 13165.5) and cast to numeric}
+\PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{mapped\PYZus{}cols}\PY{p}{:}
+    \PY{n}{prices\PYZus{}local}\PY{p}{[}\PY{n}{c}\PY{p}{]} \PY{o}{=} \PY{p}{(}
+        \PY{n}{prices\PYZus{}local}\PY{p}{[}\PY{n}{c}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{str}\PY{p}{)}
+        \PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{regex}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{regex}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    \PY{p}{)}
+    \PY{n}{prices\PYZus{}local}\PY{p}{[}\PY{n}{c}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}numeric}\PY{p}{(}\PY{n}{prices\PYZus{}local}\PY{p}{[}\PY{n}{c}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{coerce}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Drop rows that are entirely empty, just in case}
+\PY{n}{prices\PYZus{}local} \PY{o}{=} \PY{n}{prices\PYZus{}local}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{how}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{all}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{prices\PYZus{}local}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/var/folders/tz/0xkfm8xj6vj8njh5rflhfpgh0000gn/T/ipykernel\_31957/22146945.py:40:
+UserWarning: Parsing dates in \%m/\%d/\%Y format when dayfirst=True was specified.
+Pass `dayfirst=False` or specify a format to silence this warning.
+  df[date\_col] = pd.to\_datetime(df[date\_col], dayfirst=True)
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                     TSX          CAC          DAX  Eurostoxx50     NIKKEI225  \textbackslash{}
+date
+2007-03-30  13165.500000  5634.160156  6917.029785  4181.029785  17287.650391
+2007-04-02  13265.799805  5645.560059  6937.169922  4189.549805  17028.410156
+2007-04-03  13361.200195  5711.910156  7045.560059  4246.299805  17244.050781
+2007-04-04  13448.299805  5739.009766  7073.910156  4261.830078  17544.089844
+2007-04-05  13425.000000  5741.379883  7099.910156  4271.540039  17491.419922
+
+            FTSE100    SP500  IBOVESPA
+date
+2007-03-30  6308.03  1420.86     45805
+2007-04-02  6315.53  1424.55     45597
+2007-04-03  6366.11  1437.77     46288
+2007-04-04  6364.70  1439.37     46554
+2007-04-05  6397.34  1443.76     46647
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The table above shows the first few observations of the cleaned price
+data, in local currency for each index. Each row is a trading day and
+each column corresponds to one equity index (Canadian TSX, French CAC,
+German DAX, etc.).
+
+The levels are very different across countries: for instance, the S\&P
+500 is around 1,400, while the Ibovespa is above 45,000 over the same
+dates. This is exactly why we work with returns rather than price
+levels, and why we later convert everything to a common currency (USD)
+before doing any portfolio analysis.
+
+    \hypertarget{extracting-the-fx-data-from-the-excel-file}{%
+\subsubsection{1.3 Extracting the FX data from the Excel
+file}\label{extracting-the-fx-data-from-the-excel-file}}
+
+The same Excel sheet also contains FX rates against the USD, stored to
+the right of the equity index block. To express all index returns in a
+common currency (USD), we first extract this FX block from the raw data.
+
+Concretely, we:
+
+\begin{itemize}
+    \item locate the FX columns that come after the last equity index (\texttt{IBOVESPA}),
+    \item take the rows where the currency codes (CAD, EUR, JPY, GBP, USD, BRL) are given,
+    \item keep the underlying FX time series (USD per unit of local currency),
+    \item and align their dates with the equity price data in \texttt{prices\_local}.
+\end{itemize}
+
+The resulting object \texttt{fx\_vals} is a first, ``raw'\,' FX table
+that we will clean and then use to convert all indices into USD prices.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} FX block: extract the FX table from the raw sheet}
+
+\PY{n}{fx\PYZus{}start\PYZus{}col} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{get\PYZus{}loc}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IBOVESPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{2}   \PY{c+c1}{\PYZsh{} FX columns start a bit to the right}
+\PY{n}{fx\PYZus{}end\PYZus{}col}   \PY{o}{=} \PY{n}{fx\PYZus{}start\PYZus{}col} \PY{o}{+} \PY{l+m+mi}{7}                     \PY{c+c1}{\PYZsh{} CAD, EUR, EUR, EUR, JPY, GBP, USD, BRL}
+
+\PY{n}{fx\PYZus{}raw} \PY{o}{=} \PY{n}{raw}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{header\PYZus{}row}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{:}\PY{p}{,} \PY{n}{fx\PYZus{}start\PYZus{}col}\PY{p}{:}\PY{n}{fx\PYZus{}end\PYZus{}col}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} First row in this block contains the currency codes}
+\PY{n}{currencies} \PY{o}{=} \PY{n}{fx\PYZus{}raw}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{str}\PY{p}{)}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{values}
+
+\PY{c+c1}{\PYZsh{} FX values start a few rows below}
+\PY{n}{fx\PYZus{}vals} \PY{o}{=} \PY{n}{fx\PYZus{}raw}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{:}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{fx\PYZus{}vals}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{currencies}
+
+\PY{c+c1}{\PYZsh{} We align FX data on the same date index as the equity prices}
+\PY{n}{fx\PYZus{}vals}\PY{o}{.}\PY{n}{index} \PY{o}{=} \PY{n}{prices\PYZus{}local}\PY{o}{.}\PY{n}{index}
+\end{Verbatim}
+\end{tcolorbox}
+
+    We then clean the FX series. We first convert all FX entries to numeric
+values (fixing the comma vs.~dot issue), and deal with the fact that EUR
+appears several times by keeping only one EUR column. In the end we
+extract a neat \texttt{fx} dataframe with one column per currency (CAD,
+EUR, JPY, GBP, USD, BRL), indexed by the same dates as the equity
+indices.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fx\PYZus{}vals} \PY{o}{=} \PY{n}{fx\PYZus{}vals}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{s}\PY{p}{:} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}numeric}\PY{p}{(}
+    \PY{n}{s}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{str}\PY{p}{)}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{regex}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{regex}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{,}
+    \PY{n}{errors}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{coerce}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}\PY{p}{)}
+
+\PY{k}{if} \PY{p}{(}\PY{n}{fx\PYZus{}vals}\PY{o}{.}\PY{n}{columns} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EUR}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{any}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{eur\PYZus{}first} \PY{o}{=} \PY{n}{fx\PYZus{}vals}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{fx\PYZus{}vals}\PY{o}{.}\PY{n}{columns} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EUR}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n}{fx\PYZus{}vals} \PY{o}{=} \PY{n}{fx\PYZus{}vals}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EUR}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{fx\PYZus{}vals}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EUR}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{eur\PYZus{}first}
+
+\PY{c+c1}{\PYZsh{}}
+\PY{n}{fx} \PY{o}{=} \PY{n}{fx\PYZus{}vals}\PY{p}{[}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CAD}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EUR}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JPY}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GBP}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{USD}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BRL}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    We now link each equity index to its corresponding FX rate and convert
+everything into USD. Concretely, we create a simple mapping from index
+(TSX, CAC, DAX, etc.) to its currency (CAD, EUR, JPY, \dots), build an
+FX matrix aligned with the price data, and then multiply local prices by
+the relevant FX rate. The resulting \texttt{prices\_usd} dataframe
+contains all eight indices expressed in USD, and we store it as
+\texttt{prices} for the rest of the assignment.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Map each equity index to its FX currency and convert prices to USD}
+
+\PY{n}{fx\PYZus{}map} \PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{TSX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CAD}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CAC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EUR}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EUR}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Eurostoxx50}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{EUR}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NIKKEI225}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JPY}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FTSE100}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GBP}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{USD}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}      \PY{c+c1}{\PYZsh{} already quoted in USD}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IBOVESPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BRL}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{} Build an FX matrix aligned with the equity price series}
+\PY{n}{fx\PYZus{}per\PYZus{}index} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{n}{prices\PYZus{}local}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+                            \PY{n}{columns}\PY{o}{=}\PY{n}{prices\PYZus{}local}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n}{prices\PYZus{}local}\PY{o}{.}\PY{n}{columns}\PY{p}{:}
+    \PY{n}{fx\PYZus{}per\PYZus{}index}\PY{p}{[}\PY{n}{idx}\PY{p}{]} \PY{o}{=} \PY{n}{fx}\PY{p}{[}\PY{n}{fx\PYZus{}map}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Convert local\PYZhy{}currency prices to USD}
+\PY{n}{prices\PYZus{}usd} \PY{o}{=} \PY{n}{prices\PYZus{}local} \PY{o}{*} \PY{n}{fx\PYZus{}per\PYZus{}index}
+
+\PY{c+c1}{\PYZsh{} From now on we work with USD prices only}
+\PY{n}{prices} \PY{o}{=} \PY{n}{prices\PYZus{}usd}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{prices}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} quick sanity check}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                     TSX          CAC          DAX  Eurostoxx50   NIKKEI225  \textbackslash{}
+date
+2007-03-30  11405.614953  7526.663284  9240.446256  5585.429328  146.737577
+2007-04-02  11473.616783  7548.147672  9275.037809  5601.453227  144.605259
+2007-04-03  11532.693226  7611.108859  9388.194687  5658.185998  145.074199
+2007-04-04  11606.366871  7675.345922  9460.640369  5699.767284  147.721236
+2007-04-05  11664.781125  7711.827200  9536.606421  5737.536852  147.365213
+
+                 FTSE100    SP500      IBOVESPA
+date
+2007-03-30  12316.523195  1420.86  22289.537490
+2007-04-02  12493.381446  1424.55  22313.211129
+2007-04-03  12562.875108  1437.77  22758.235808
+2007-04-04  12579.205809  1439.37  22947.677004
+2007-04-05  12612.304631  1443.76  23008.306221
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The table above shows the first few observations of our
+\textbf{USD-denominated price
+series}. Each column corresponds to one equity index, now expressed in
+the same currency (USD):
+
+\begin{itemize}
+  \item TSX, CAC, DAX, Eurostoxx50, FTSE100 and SP500 are all in the \textbf{thousands of USD},
+        as expected for large developed-market indices.
+  \item NIKKEI225 appears around \textbf{145--150 USD} because the original JPY index level
+        has been scaled by the JPY--USD exchange rate.
+  \item IBOVESPA is in the \textbf{20,000+ USD} range after conversion from BRL.
+\end{itemize}
+
+The magnitudes look consistent with typical index levels once everything
+is converted into USD, so we will use this \texttt{prices} dataframe as
+the starting point to compute \textbf{daily USD log returns} in the next
+step.
+
+    \hypertarget{daily-log-returns-in-usd}{%
+\subsubsection{1.4 Daily log returns in
+USD}\label{daily-log-returns-in-usd}}
+
+From the USD price series, we now compute \textbf{daily log returns} for
+each index.
+
+We take the log of the price ratio \(\log(P_t / P_{t-1})\) and drop the
+first missing observation. The resulting \texttt{returns} dataframe will
+be the main input for all the summary statistics and tests in the rest
+of Question\textasciitilde1.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Daily log returns (USD)}
+\PY{n}{returns} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{prices} \PY{o}{/} \PY{n}{prices}\PY{o}{.}\PY{n}{shift}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{returns}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                 TSX       CAC       DAX  Eurostoxx50  NIKKEI225   FTSE100  \textbackslash{}
+date
+2007-04-02  0.005944  0.002850  0.003737     0.002865  -0.014638  0.014257
+2007-04-03  0.005136  0.008307  0.012126     0.010077   0.003238  0.005547
+2007-04-04  0.006368  0.008404  0.007687     0.007322   0.018082  0.001299
+2007-04-05  0.005020  0.004742  0.007998     0.006605  -0.002413  0.002628
+2007-04-10  0.003777  0.004326  0.009359     0.006982   0.006290  0.003346
+
+               SP500  IBOVESPA
+date
+2007-04-02  0.002594  0.001062
+2007-04-03  0.009237  0.019748
+2007-04-04  0.001112  0.008290
+2007-04-05  0.003045  0.002639
+2007-04-10  0.003202  0.011431
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The table shows the first few \textbf{daily USD log returns} for our
+eight indices.\\
+Each row corresponds to a trading day and each column to one market. The
+numbers are small (mostly between \(-2\%\) and \(+2\%\)), which is
+exactly what we expect for daily equity moves.
+
+We already see some cross-sectional differences: for example, on 2 April
+2007 the Nikkei drops by about (-1.5\%) while the European indices and
+the S\&P\textasciitilde500 all post small positive returns. These
+\texttt{returns} series are what we will use to compute summary
+statistics, correlations and normality tests in the rest of the
+question.
+
+    We first look at the time series of \textbf{daily USD log returns} for
+all eight indices on the same plot.\\
+To get a sense of the typical scale of daily moves, we also add
+horizontal bands at \(\pm 1\sigma\) and \(\pm 2\sigma\) (using the
+S\&P\textasciitilde500 volatility as a reference).
+
+This gives a global picture of how volatile each market is and how
+crises show up in the data: large common spikes appear around 2008--2009
+and again in 2020, while most of the time returns oscillate in a narrow
+band around zero. The figure also suggests that shocks are largely
+synchronised across markets, which will matter later when we look at
+correlations and mean--variance portfolios.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We plot all daily USD log returns on the same axis}
+\PY{n}{returns}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{ax}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.8}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Daily log returns of equity indices (USD)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Log return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Here we compute overall daily volatility from SP500 (for the bands)}
+\PY{n}{sigma} \PY{o}{=} \PY{n}{returns}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 0, ±1σ, ±2σ lines in BLUE}
+\PY{n}{plt}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}        \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{blue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{sigma}\PY{p}{,}    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{blue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{sigma}\PY{p}{,}   \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{blue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{sigma}\PY{p}{,}  \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{blue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{sigma}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{blue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We put the legend on the right so it doesn\PYZsq{}t bother our analysis }
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{center left}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{bbox\PYZus{}to\PYZus{}anchor}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_21_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The time-series plot of daily USD log returns shows that all indices
+fluctuate around zero, with frequent small moves and occasional large
+spikes. Most observations lie between the \(\pm 1\sigma\) bands, and a
+large majority remain within \(\pm 2\sigma\), which is in line with the
+idea of ``normal'\,' day-to-day volatility.
+
+However, during crisis periods (2008--2009, some episodes around
+2011--2016, and especially 2020 with Covid) many points clearly break
+through the \(\pm 2\sigma\) lines. These outliers highlight how extreme
+those episodes are compared with the usual daily noise. The fact that
+several indices cross the bands at the same time also confirms that
+markets tend to move together on stressful days, which is consistent
+with the high cross-correlations we report later.
+
+    To look more closely at this time-varying volatility, we now focus on a
+single market (the S\&P 500) and compute a 15-day rolling standard
+deviation of its daily log returns. This rolling volatility measure
+makes the volatility clustering more visible and is directly relevant
+for assessing the i.i.d.~Gaussian assumption.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{roll} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{rolling}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{)}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{roll}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{roll}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500 rolling volatility (15\PYZhy{}day window, USD log returns)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rolling std}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_24_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The 15-day rolling volatility of S\&P 500 returns confirms very strong
+time variation in risk.
+
+Volatility is low and fairly stable in ``normal'\,' periods (around
+0.5--1\% per day), but it jumps to much higher levels during crises:
+above 4--6\% in 2008--2009 and even higher around March 2020.
+
+These long stretches of calm followed by volatility bursts are clearly
+inconsistent with the constant-variance assumption behind an
+i.i.d.~Gaussian model, and they suggest that any realistic model should
+allow for volatility clustering (for instance through GARCH-type
+dynamics).
+
+    \hypertarget{summary-statistics-of-daily-returns}{%
+\subsubsection{1.5 Summary statistics of daily
+returns}\label{summary-statistics-of-daily-returns}}
+
+To summarise the behaviour of the \textbf{USD daily log returns}, we now
+compute a set of basic moments for each index: mean, standard deviation,
+skewness, (excess) kurtosis and the first-order autocorrelation. This
+gives us a compact view of average performance, risk and departures from
+normality before moving on to more formal tests.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{summary} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{n}{returns}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{std}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{skew}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{skew}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZdq{}kurtosis\PYZdq{} in the usual sense (not centred at 3)}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{kurtosis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{kurtosis}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{fisher}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} excess kurtosis = kurtosis − 3}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{excess\PYZus{}kurtosis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{kurtosis}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{fisher}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} first\PYZhy{}order autocorrelation of daily returns}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{autocorr\PYZus{}lag1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{.}\PY{n}{autocorr}\PY{p}{(}\PY{n}{lag}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{summary}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                 mean       std      skew   kurtosis  excess\_kurtosis  \textbackslash{}
+TSX          0.000117  0.015251 -0.865886  15.285325        12.285325
+CAC          0.000025  0.018352  0.372059  20.554237        17.554237
+DAX          0.000207  0.018058  0.410799  19.888278        16.888278
+Eurostoxx50 -0.000041  0.018481  0.283613  19.952566        16.952566
+NIKKEI225    0.000165  0.016163 -0.552175  19.710934        16.710934
+FTSE100     -0.000065  0.015374 -0.274320  13.079991        10.079991
+SP500        0.000374  0.013581 -0.637448  15.001456        12.001456
+IBOVESPA    -0.000060  0.024794 -0.154722  14.059129        11.059129
+
+             autocorr\_lag1
+TSX               0.007233
+CAC              -0.075810
+DAX              -0.058452
+Eurostoxx50      -0.077204
+NIKKEI225        -0.199259
+FTSE100          -0.019601
+SP500            -0.154566
+IBOVESPA          0.012955
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We can also summarise the behaviour of the \textbf{local currency daily
+log returns}. Here we compute the same set of basic moments for each
+index: mean, standard deviation, skewness, (excess) kurtosis and the
+first-order autocorrelation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Daily log returns (local currency)}
+\PY{n}{returns\PYZus{}local} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{prices\PYZus{}local} \PY{o}{/} \PY{n}{prices\PYZus{}local}\PY{o}{.}\PY{n}{shift}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{returns\PYZus{}local}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                 TSX       CAC       DAX  Eurostoxx50  NIKKEI225   FTSE100  \textbackslash{}
+date
+2007-04-02  0.007590  0.002021  0.002907     0.002036  -0.015109  0.001188
+2007-04-03  0.007166  0.011684  0.015504     0.013455   0.012584  0.007977
+2007-04-04  0.006498  0.004733  0.004016     0.003651   0.017250 -0.000222
+2007-04-05 -0.001734  0.000413  0.003669     0.002276  -0.003007  0.005115
+2007-04-10  0.000469  0.004326  0.009359     0.006982   0.009857  0.003188
+
+               SP500  IBOVESPA
+date
+2007-04-02  0.002594 -0.004551
+2007-04-03  0.009237  0.015041
+2007-04-04  0.001112  0.005730
+2007-04-05  0.003045  0.001996
+2007-04-10  0.003202  0.011234
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{summary} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{n}{returns\PYZus{}local}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns\PYZus{}local}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{std}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns\PYZus{}local}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{skew}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns\PYZus{}local}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{skew}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZdq{}kurtosis\PYZdq{} in the usual sense (not centred at 3)}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{kurtosis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns\PYZus{}local}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{kurtosis}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{fisher}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} excess kurtosis = kurtosis − 3}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{excess\PYZus{}kurtosis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns\PYZus{}local}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{kurtosis}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{fisher}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} first\PYZhy{}order autocorrelation of daily returns}
+\PY{n}{summary}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{autocorr\PYZus{}lag1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{returns\PYZus{}local}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{.}\PY{n}{autocorr}\PY{p}{(}\PY{n}{lag}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{summary}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                 mean       std      skew   kurtosis  excess\_kurtosis  \textbackslash{}
+TSX          0.000148  0.012258 -0.940863  21.365833        18.365833
+CAC          0.000075  0.015316 -0.158893  11.563660         8.563660
+DAX          0.000257  0.014979 -0.118430  11.550073         8.550073
+Eurostoxx50  0.000009  0.015405 -0.227407  10.915073         7.915073
+NIKKEI225    0.000157  0.015865 -0.419294  10.522641         7.522641
+FTSE100      0.000049  0.012931 -0.242582  13.164633        10.164633
+SP500        0.000374  0.013581 -0.637448  15.001456        12.001456
+IBOVESPA     0.000256  0.018863 -0.292725  12.297993         9.297993
+
+             autocorr\_lag1
+TSX              -0.098100
+CAC              -0.029844
+DAX               0.003019
+Eurostoxx50      -0.033778
+NIKKEI225        -0.035715
+FTSE100          -0.045531
+SP500            -0.154566
+IBOVESPA         -0.077461
+\end{Verbatim}
+\end{tcolorbox}
+        
+    This table already tells us a lot about the behaviour of the eight
+indices.
+
+First, the \textbf{average daily returns} are tiny compared to
+volatility: they are on the order of a few basis points per day, with
+the S\&P\textasciitilde500 having the highest mean (about 0.037\% per
+day) and some markets such as Eurostoxx50 or FTSE100 even slightly
+negative over the sample. At the daily horizon, the ``signal'\,' in the
+mean is clearly dominated by noise.
+
+By contrast, the \textbf{standard deviations} are much larger and differ
+quite a lot across markets. Ibovespa stands out as the most volatile
+index (around 2.5\% per day), followed by the Euro area indices (CAC,
+DAX, Eurostoxx50, with volatilities around 1.8--1.9\%). TSX and
+S\&P\textasciitilde500 are a bit less volatile, which matches the usual
+intuition that emerging markets and some European markets are riskier
+than large developed US/Canadian equities.
+
+The \textbf{shape of the return distribution} is very far from Gaussian.
+Skewness is often negative (TSX, Nikkei, FTSE, S\&P\textasciitilde500,
+Ibovespa), which means that large negative moves are more frequent than
+large positive ones. Above all, the excess kurtosis is extremely high
+for every index (between roughly 10 and 18, instead of 0 under a normal
+distribution). This points to very fat tails and frequent extreme
+events, which is hard to reconcile with a simple Gaussian i.i.d.~model.
+
+Finally, the \textbf{lag-1 autocorrelations} of returns are all close to
+zero, sometimes slightly negative (European indices, Nikkei), sometimes
+slightly positive (TSX, Ibovespa). This is broadly consistent with
+weak-form market efficiency: daily returns themselves are almost
+uncorrelated over time, even though their distribution is very
+non-normal.
+
+    Overall, the i.i.d.~Gaussian assumption is not really supported by the
+data: independence at the daily frequency is roughly plausible, but the
+normality part is strongly rejected because of the heavy tails and
+skewness.
+
+    \hypertarget{correlation-matrix-of-daily-usd-returns}{%
+\subsubsection{1.6 Correlation matrix of daily USD
+returns}\label{correlation-matrix-of-daily-usd-returns}}
+
+We now compute the correlation matrix of daily USD log returns across
+the eight indices. This gives a compact view of how strongly the
+different equity markets move together and will be useful later when we
+study diversification and mean--variance portfolios.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{corr} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
+\PY{n}{corr}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                  TSX       CAC       DAX  Eurostoxx50  NIKKEI225   FTSE100  \textbackslash{}
+TSX          1.000000  0.677227  0.659697     0.661918   0.222340  0.716389
+CAC          0.677227  1.000000  0.950523     0.984838   0.260700  0.841713
+DAX          0.659697  0.950523  1.000000     0.966589   0.246152  0.809851
+Eurostoxx50  0.661918  0.984838  0.966589     1.000000   0.248228  0.830241
+NIKKEI225    0.222340  0.260700  0.246152     0.248228   1.000000  0.343642
+FTSE100      0.716389  0.841713  0.809851     0.830241   0.343642  1.000000
+SP500        0.771410  0.612419  0.615929     0.611192   0.099309  0.616687
+IBOVESPA     0.685627  0.567331  0.540996     0.553301   0.238317  0.617852
+
+                SP500  IBOVESPA
+TSX          0.771410  0.685627
+CAC          0.612419  0.567331
+DAX          0.615929  0.540996
+Eurostoxx50  0.611192  0.553301
+NIKKEI225    0.099309  0.238317
+FTSE100      0.616687  0.617852
+SP500        1.000000  0.610080
+IBOVESPA     0.610080  1.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The correlation matrix confirms that most developed markets move very
+closely together in USD. CAC, DAX and Eurostoxx50 are almost perfectly
+correlated, and TSX, FTSE100, SP500 and IBOVESPA all show fairly high
+correlations with this European block (around 0.6--0.8). The Nikkei is
+the only real outlier, with much lower correlations (around 0.2--0.3,
+and only about 0.1 with the S\&P\textasciitilde500), so Japan is the
+main source of diversification in this set of indices.
+
+    To better visualise the dependence structure across markets, we now plot
+the correlation matrix of daily USD log returns as a heatmap. This gives
+us a quick, graphical view of which indices tend to move together and
+which ones offer more diversification.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Correlation matrix of daily USD log returns}
+\PY{n}{corr} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{im} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{corr}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{viridis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{vmin}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{vmax}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Ticks \PYZam{} labels}
+\PY{n}{assets} \PY{o}{=} \PY{n}{corr}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{assets}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{assets}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{,} \PY{n}{ha}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{yticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{assets}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{assets}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Correlation matrix of daily USD log returns}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{im}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Correlation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_37_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The heatmap makes these patterns easy to see: the European indices, the
+UK, North America and Brazil form a bright yellow ``cluster'' of highly
+correlated markets. In contrast, the darker row and column for the
+Nikkei show that Japanese equities are noticeably less connected to the
+rest, which is exactly what we would look for when trying to diversify a
+global equity portfolio.
+
+    It is worth noting that these high correlations are obtained
+\emph{after} converting all indices to USD. The strong within-Europe
+block therefore cannot be attributed to a shared quotation currency
+only, but rather to common economic and policy shocks that affect
+European equity markets in a very similar way.
+
+    \hypertarget{sp500-empirical-distribution-vs-fitted-normal}{%
+\subsubsection{1.7 SP500 empirical distribution vs fitted
+normal}\label{sp500-empirical-distribution-vs-fitted-normal}}
+
+To get a more visual feeling for the (non-)normality of returns, we
+focus on the S\&P 500 and compare its empirical distribution to a fitted
+Gaussian.
+
+We plot the histogram of daily USD log returns together with the normal
+density using the sample mean and standard deviation. This helps us see
+where the normal approximation breaks down (in particular in the tails
+and around the centre), before moving on to formal normality tests.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{asset} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{x} \PY{o}{=} \PY{n}{returns}\PY{p}{[}\PY{n}{asset}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{mu\PYZus{}hat}\PY{p}{,} \PY{n}{sigma\PYZus{}hat} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{60}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.6}\PY{p}{)}
+\PY{n}{xx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{400}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{xx}\PY{p}{,} \PY{n}{norm}\PY{o}{.}\PY{n}{pdf}\PY{p}{(}\PY{n}{xx}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{n}{mu\PYZus{}hat}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{n}{sigma\PYZus{}hat}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{asset}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{: daily log returns (USD) vs fitted normal}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Daily return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_41_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    On the S\&P 500, the fitted normal curve roughly matches the centre of
+the histogram, but the fit is clearly not perfect. The empirical
+distribution is slightly left-skewed and much more peaked with fatter
+tails than the Gaussian: most observations are very close to zero, but
+we also see a few extreme moves that occur more often than a normal
+model would predict.
+
+Visually this already suggests that the i.i.d.~normal assumption is
+questionable, at least for the tail behaviour. To make this diagnosis
+more precise, we now turn to a formal Jarque--Bera normality test on all
+indices.
+
+    \hypertarget{jarquebera-normality-test}{%
+\subsubsection{1.8 Jarque--Bera normality
+test}\label{jarquebera-normality-test}}
+
+Visual inspection of the S\&P 500 returns already suggests deviations
+from normality, but this is still subjective. We therefore run a
+Jarque--Bera test on each index. The test statistic combines skewness
+and excess kurtosis, and under the null hypothesis of normality it
+follows (asymptotically) a \(\chi^2\) distribution with 2 degrees of
+freedom.
+
+In the code below we compute, for every index, the Jarque--Bera
+statistic and its p-value and collect the results in a small table. This
+allows us to see systematically whether the Gaussian assumption can be
+rejected for our daily USD log returns.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{jb} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{s}\PY{p}{:} \PY{n}{jarque\PYZus{}bera}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{statistic}\PY{p}{)}
+\PY{n}{jb\PYZus{}p} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{s}\PY{p}{:} \PY{n}{jarque\PYZus{}bera}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{pvalue}\PY{p}{)}
+
+\PY{n}{jb\PYZus{}table} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JB\PYZus{}stat}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{jb}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{jb\PYZus{}p}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{jb\PYZus{}table}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                  JB\_stat  p\_value
+TSX          20780.314426      0.0
+CAC          41675.166886      0.0
+DAX          38595.008923      0.0
+Eurostoxx50  38841.018140      0.0
+NIKKEI225    37864.111306      0.0
+FTSE100      13757.475020      0.0
+SP500        19664.141129      0.0
+IBOVESPA     16524.010894      0.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The Jarque--Bera results are completely unambiguous. For all eight
+indices the JB statistics are extremely large (of order
+\(10^4\)--\(10^5\)) and the p-values are effectively zero. At any usual
+significance level (even 1\% or 0.1\%) we therefore \textbf{strongly
+reject} the null hypothesis that daily USD log returns are normally
+distributed.
+
+Combined with the large excess kurtosis and negative skewness we found
+earlier, this confirms that the Gaussian i.i.d.~assumption is not
+realistic for these equity index returns: the distributions are far too
+heavy-tailed and asymmetric to be well approximated by a normal law.
+
+    \hypertarget{robustness-removing-crisis-years}{%
+\subsubsection{1.9 Robustness: removing crisis
+years}\label{robustness-removing-crisis-years}}
+
+Because the strong rejection of normality could in principle be driven
+by a few extreme crisis days, we run a simple robustness check. We
+remove the main crisis periods (2008--2009 and 2020) from the sample,
+recompute daily USD log returns on the trimmed dataset, and run the
+Jarque--Bera test again for each index. This allows us to see whether
+the non-Gaussianity is entirely due to tail events or remains a
+structural feature of equity returns.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} We remove main crisis years (2008, 2009 and 2020)}
+\PY{n}{crisis\PYZus{}years} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2008}\PY{p}{,} \PY{l+m+mi}{2009}\PY{p}{,} \PY{l+m+mi}{2020}\PY{p}{]}
+\PY{n}{mask\PYZus{}crisis} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{year}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{crisis\PYZus{}years}\PY{p}{)}
+
+\PY{n}{returns\PYZus{}trim} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{mask\PYZus{}crisis}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{jarque\PYZus{}bera}
+
+\PY{n}{jb\PYZus{}trim\PYZus{}stat} \PY{o}{=} \PY{n}{returns\PYZus{}trim}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{s}\PY{p}{:} \PY{n}{jarque\PYZus{}bera}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{statistic}\PY{p}{)}
+\PY{n}{jb\PYZus{}trim\PYZus{}p} \PY{o}{=} \PY{n}{returns\PYZus{}trim}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{s}\PY{p}{:} \PY{n}{jarque\PYZus{}bera}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{pvalue}\PY{p}{)}
+
+\PY{n}{jb\PYZus{}trim\PYZus{}table} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{JB\PYZus{}stat\PYZus{}trim}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{jb\PYZus{}trim\PYZus{}stat}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p\PYZus{}value\PYZus{}trim}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{jb\PYZus{}trim\PYZus{}p}\PY{p}{\PYZcb{}}
+\PY{p}{)}
+\PY{n}{jb\PYZus{}trim\PYZus{}table}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+             JB\_stat\_trim   p\_value\_trim
+TSX           1339.646168  1.257566e-291
+CAC           3279.052062   0.000000e+00
+DAX           1469.757549   0.000000e+00
+Eurostoxx50   3921.160086   0.000000e+00
+NIKKEI225     4414.006357   0.000000e+00
+FTSE100       2733.185183   0.000000e+00
+SP500         1806.351927   0.000000e+00
+IBOVESPA       685.158441  1.658574e-149
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The trimmed-sample Jarque--Bera statistics remain very large (of order
+\(10^3\) for most indices, with p-values effectively equal to zero).
+Even though the test statistics are lower than in the full sample, we
+still strongly reject the null of normality for all markets, including
+Ibovespa where the JB statistic is around 685 with a p-value of about
+\(10^{-149}\). This confirms that non-Gaussian features are not driven
+solely by the 2008--2009 and 2020 crisis periods, but are a persistent
+property of daily equity index returns.
+
+    \hypertarget{testing-autocorrelation-ljungbox}{%
+\subsubsection{1.10 Testing autocorrelation
+(Ljung--Box)}\label{testing-autocorrelation-ljungbox}}
+
+To check whether returns are really i.i.d.~over time, we run Ljung--Box
+tests on each index. For every return series we compute the test at lags
+5 and 10 and store both the test statistics and the p-values in a small
+summary table. This tells us whether we can reject the null hypothesis
+of ``no autocorrelation up to lag 5/10'\,' for each market.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{lb\PYZus{}results} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{returns}\PY{o}{.}\PY{n}{columns}\PY{p}{:}
+    \PY{n}{res} \PY{o}{=} \PY{n}{acorr\PYZus{}ljungbox}\PY{p}{(}\PY{n}{returns}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lags}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,} \PY{n}{return\PYZus{}df}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+    \PY{n}{lb\PYZus{}results}\PY{p}{[}\PY{n}{col}\PY{p}{]} \PY{o}{=} \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{LB\PYZus{}stat\PYZus{}5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{res}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lb\PYZus{}stat}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p\PYZus{}value\PYZus{}5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{res}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lb\PYZus{}pvalue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{LB\PYZus{}stat\PYZus{}10}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{res}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lb\PYZus{}stat}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p\PYZus{}value\PYZus{}10}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{res}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lb\PYZus{}pvalue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+    \PY{p}{\PYZcb{}}
+
+\PY{n}{lb\PYZus{}table} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{lb\PYZus{}results}\PY{p}{)}\PY{o}{.}\PY{n}{T}
+\PY{n}{lb\PYZus{}table}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+              LB\_stat\_5     p\_value\_5  LB\_stat\_10    p\_value\_10
+TSX           17.759759  3.263065e-03   35.610376  9.818733e-05
+CAC           52.736517  3.809433e-10   69.887446  4.661267e-11
+DAX           35.893740  9.974462e-07   50.878012  1.839312e-07
+Eurostoxx50   48.875857  2.352759e-09   62.487962  1.222083e-09
+NIKKEI225    130.566808  1.804204e-26  134.983663  4.483116e-24
+FTSE100       35.961387  9.668529e-07   43.837120  3.520954e-06
+SP500         91.833893  2.766657e-18  112.634488  1.568458e-19
+IBOVESPA       5.147162  3.981858e-01   18.314960  4.987750e-02
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The Ljung--Box results point in the same direction as before: daily
+returns are not i.i.d.~white noise.
+
+\begin{itemize}
+  \item For almost all indices, the p-values at lags 5 and 10 are essentially zero. We clearly
+  reject the null of ``no autocorrelation up to lag 5/10''. This is especially strong for
+  the Nikkei and the S\&P 500, where the test statistics are very large.
+  \item Ibovespa is the only borderline case: at lag 5 the p-value is around 0.40 (we do \emph{not}
+  reject), but by lag 10 it drops to about 5\%, so even there we see some dependence once
+  we look further out.
+\end{itemize}
+
+Overall, the Ljung--Box tests confirm that daily USD returns display
+significant serial dependence, which is another reason why the
+i.i.d.~Gaussian assumption is not really appropriate for these series.
+
+    \hypertarget{conclusion-for-question-1}{%
+\subsubsection{1.11 Conclusion for Question
+1}\label{conclusion-for-question-1}}
+
+Overall, the daily USD log returns of our eight indices do not behave
+like i.i.d.~Gaussian variables.
+
+Means are tiny compared to volatilities, returns are heavily correlated
+across markets, distributions are clearly skewed with very fat tails,
+and both the Jarque--Bera and Ljung--Box tests strongly reject normality
+and independence.
+
+In the rest of the assignment we will still rely on the Gaussian
+i.i.d.~framework to build mean--variance portfolios, but with the clear
+caveat that it is a modelling simplification rather than a realistic
+description of the data.
+
+    \hypertarget{question-2-mean-variance-mv-analysis-1}{%
+\subsection{Question 2 -- Mean-Variance (MV) analysis
+\#1}\label{question-2-mean-variance-mv-analysis-1}}
+
+In this question, we implement the traditional Markowitz mean--variance
+framework using historical estimates of expected returns and the
+covariance matrix (the ``plug-in'\,' approach from the course notes).
+
+We:
+
+\begin{enumerate}
+    \item Estimate annualized expected returns and the annualized covariance matrix from daily log returns.
+    \item Compute MV-efficient portfolios across a grid of target returns (efficient frontier).
+    \item Identify the tangency portfolio (maximum Sharpe ratio).
+    \item Repeat the same exercise with a no short-sale constraint (non-negative weights).
+\end{enumerate}
+
+    Since the assignment does not provide a particular value, we assume a
+constant annual risk-free rate of \((r_f = 0)\) for the whole analysis.
+This implies that excess returns coincide with expected returns, so the
+shape of the efficient frontier and the composition of the tangency
+portfolios are unaffected by choosing a small positive benchmark rate
+instead.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{quadprog}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{estimate-inputs-plug-in-rule}{%
+\subsubsection{2.1 Estimate inputs (plug-in
+rule)}\label{estimate-inputs-plug-in-rule}}
+
+We use historical daily log returns (in USD) to estimate:
+
+\begin{itemize}
+\item
+  Annualized expected returns: \(\mu_{ann} = 252 \cdot \mu_{daily}\)
+\item
+  Annualized covariance matrix:
+  \(\Sigma_{ann} = 252 \cdot \Sigma_{daily}\)
+\end{itemize}
+
+These are the inputs needed for mean--variance optimization.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} returns is our daily log returns DataFrame from Q1}
+\PY{n}{assets} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+\PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{assets}\PY{p}{)}
+
+\PY{n}{mu\PYZus{}daily} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{values}                  \PY{c+c1}{\PYZsh{} shape (n,)}
+\PY{n}{Sigma\PYZus{}daily} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{values}                \PY{c+c1}{\PYZsh{} shape (n, n)}
+
+\PY{n}{ann\PYZus{}factor} \PY{o}{=} \PY{l+m+mi}{252}
+\PY{n}{mu} \PY{o}{=} \PY{n}{mu\PYZus{}daily} \PY{o}{*} \PY{n}{ann\PYZus{}factor}                        \PY{c+c1}{\PYZsh{} annualized expected returns}
+\PY{n}{Sigma} \PY{o}{=} \PY{n}{Sigma\PYZus{}daily} \PY{o}{*} \PY{n}{ann\PYZus{}factor}                  \PY{c+c1}{\PYZsh{} annualized covariance}
+
+\PY{c+c1}{\PYZsh{} Risk\PYZhy{}free rate (not provided in the assignment, we set it to 0 and state it)}
+\PY{n}{rf} \PY{o}{=} \PY{l+m+mf}{0.0}
+
+\PY{n}{mu\PYZus{}excess} \PY{o}{=} \PY{n}{mu} \PY{o}{\PYZhy{}} \PY{n}{rf} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+
+\PY{n}{mu\PYZus{}series} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{assets}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ann\PYZus{}mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{sigma\PYZus{}series} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{Sigma}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{assets}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ann\PYZus{}vol}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{mu\PYZus{}series}\PY{p}{,} \PY{n}{sigma\PYZus{}series}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+(TSX            0.029466
+ CAC            0.006178
+ DAX            0.052057
+ Eurostoxx50   -0.010314
+ NIKKEI225      0.041593
+ FTSE100       -0.016259
+ SP500          0.094338
+ IBOVESPA      -0.014995
+ Name: ann\_mean, dtype: float64,
+ TSX            0.242104
+ CAC            0.291322
+ DAX            0.286656
+ Eurostoxx50    0.293384
+ NIKKEI225      0.256576
+ FTSE100        0.244062
+ SP500          0.215596
+ IBOVESPA       0.393585
+ Name: ann\_vol, dtype: float64)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The table above reports the annualised sample means and volatilities of
+daily USD log returns for the eight indices.
+
+A first observation is that average returns are quite modest compared to
+risk. Over the full 2007--2021 sample, the S\&P\textasciitilde500 stands
+out with an annualised mean close to 9\%, while markets such as the DAX
+and the Nikkei are in the 4--5\% range, and the TSX around 3\%. In
+contrast, several indices have \emph{negative} average returns over this
+period (Eurostoxx50, FTSE100, Ibovespa), which is plausible given that
+our window includes the global financial crisis, the European debt
+crisis and the Covid shock.
+
+Volatilities are much larger and display strong cross-sectional
+differences. The Ibovespa is by far the most volatile market, with an
+annualised standard deviation close to 40\%, followed by the European
+indices and the TSX, all around 25--30\%. The S\&P\textasciitilde500 is
+relatively less volatile (around 21\%), but still much riskier than a
+typical bond investment. Overall, this table already suggests that any
+mean--variance allocation will be driven more by differences in
+volatility and correlation than by small differences in average returns.
+
+    \hypertarget{mapping-markowitz-to-quadprog}{%
+\subsubsection{\texorpdfstring{2.2 Mapping Markowitz to
+\texttt{quadprog}}{2.2 Mapping Markowitz to quadprog}}\label{mapping-markowitz-to-quadprog}}
+
+The function \texttt{quadprog.solve\_qp} solves quadratic programs of
+the form
+
+\[
+\min_w \; \frac{1}{2} w^\top G w - a^\top w
+\quad \text{s.t.} \quad C^\top w \ge b.
+\]
+
+In the assignment, the problem is written as
+
+\[
+\min_x \; \frac{1}{2} x^\top H x + f^\top x
+\quad \text{s.t.} \quad A x \le b.
+\]
+
+The two formulations are equivalent up to a change of notation and a
+sign convention. We can set \[
+G = H, \qquad a = -f, \qquad C = -A, \qquad b_{\text{qp}} = -b,
+\] so that the constraint (A x \le b) is the same as ((-A)x \ge -b),
+i.e.~\(C^\top w \ge b_{\text{qp}}\) in the \texttt{quadprog} notation.
+
+In our mean--variance setting we take (x = w) (portfolio weights) and (H
+= 2\Sigma). Then \[
+\min_w \; \frac{1}{2} w^\top G w
+\quad \text{with} \quad G = 2\Sigma
+\] corresponds to minimising portfolio variance. For minimum-variance
+portfolios we set (a = 0).
+
+To trace the efficient frontier, we impose two equality constraints (as
+in the course notes): \[
+\mathbf{1}^\top w = 1
+\quad \text{and} \quad
+\mu^\top w = \mu_{\text{target}}.
+\] In \texttt{quadprog}, these are implemented via \texttt{meq\ =\ 2},
+meaning that the first two columns of (C) (and the corresponding entries
+of (\(b_{\text{qp}}\)) are treated as equalities. Additional inequality
+constraints, such as the no short-sale constraint \(w_i \ge 0\), can
+then be added as extra columns of (C) with the appropriate entries in
+\(b_{\text{qp}}\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{solve\PYZus{}mv\PYZus{}target\PYZus{}return\PYZus{}quadprog}\PY{p}{(}\PY{n}{mu\PYZus{}vec}\PY{p}{,} \PY{n}{Sigma\PYZus{}mat}\PY{p}{,} \PY{n}{target\PYZus{}return}\PY{p}{,} \PY{n}{no\PYZus{}short}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Minimize variance subject to:}
+\PY{l+s+sd}{      1\PYZsq{} w = 1}
+\PY{l+s+sd}{      mu\PYZsq{} w = target\PYZus{}return}
+\PY{l+s+sd}{    Optionally: w \PYZgt{}= 0 (no\PYZus{}short=True)}
+\PY{l+s+sd}{    Uses quadprog: min 1/2 w\PYZsq{} G w \PYZhy{} a\PYZsq{} w  s.t.  C\PYZsq{} w \PYZgt{}= b}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{mu\PYZus{}vec}\PY{p}{)}
+    \PY{n}{G} \PY{o}{=} \PY{l+m+mf}{2.0} \PY{o}{*} \PY{n}{Sigma\PYZus{}mat}
+    \PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+
+    \PY{n}{ones} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Build constraints C\PYZsq{} w gt or equal to b}
+    \PY{c+c1}{\PYZsh{} First two constraints are equalities: mu\PYZsq{}w = target, 1\PYZsq{}w = 1}
+    \PY{k}{if} \PY{n}{no\PYZus{}short}\PY{p}{:}
+        \PY{n}{C} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{column\PYZus{}stack}\PY{p}{(}\PY{p}{[}\PY{n}{mu\PYZus{}vec}\PY{p}{,} \PY{n}{ones}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{]}\PY{p}{)}     \PY{c+c1}{\PYZsh{} shape (n, 2+n)}
+        \PY{n}{b} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{target\PYZus{}return}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+        \PY{n}{meq} \PY{o}{=} \PY{l+m+mi}{2}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{C} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{column\PYZus{}stack}\PY{p}{(}\PY{p}{[}\PY{n}{mu\PYZus{}vec}\PY{p}{,} \PY{n}{ones}\PY{p}{]}\PY{p}{)}                \PY{c+c1}{\PYZsh{} shape (n, 2)}
+        \PY{n}{b} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{target\PYZus{}return}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{meq} \PY{o}{=} \PY{l+m+mi}{2}
+
+    \PY{n}{sol} \PY{o}{=} \PY{n}{quadprog}\PY{o}{.}\PY{n}{solve\PYZus{}qp}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{C}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{meq}\PY{p}{)}
+    \PY{n}{w} \PY{o}{=} \PY{n}{sol}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{k}{return} \PY{n}{w}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{mu\PYZus{}vec}\PY{p}{,} \PY{n}{Sigma\PYZus{}mat}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{l+m+mf}{0.0}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Return (ann\PYZus{}return, ann\PYZus{}vol, ann\PYZus{}sharpe)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{ret} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{w} \PY{o}{@} \PY{n}{mu\PYZus{}vec}\PY{p}{)}
+    \PY{n}{vol} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{w} \PY{o}{@} \PY{n}{Sigma\PYZus{}mat} \PY{o}{@} \PY{n}{w}\PY{p}{)}\PY{p}{)}
+    \PY{n}{sharpe} \PY{o}{=} \PY{p}{(}\PY{n}{ret} \PY{o}{\PYZhy{}} \PY{n}{rf}\PY{p}{)} \PY{o}{/} \PY{n}{vol} \PY{k}{if} \PY{n}{vol} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0} \PY{k}{else} \PY{n}{np}\PY{o}{.}\PY{n}{nan}
+    \PY{k}{return} \PY{n}{ret}\PY{p}{,} \PY{n}{vol}\PY{p}{,} \PY{n}{sharpe}
+\end{Verbatim}
+\end{tcolorbox}
+
+    The two helper functions defined above will be used throughout the
+mean--variance analysis.
+
+\begin{itemize}
+\item
+  \texttt{solve\_mv\_target\_return\_quadprog} solves the Markowitz
+  problem of \textbf{minimum variance for a given target return}.\\
+  Given annualised expected returns \(\mu\), covariance matrix
+  \(\Sigma\) and a target return \(\mu_{\text{target}}\), it solves \[
+  \min_{w} \; \frac{1}{2} w^\top (2\Sigma) w
+  \quad \text{s.t.} \quad
+  \mathbf{1}^\top w = 1, \quad
+  \mu^\top w = \mu_{\text{target}},
+  \] and, when \texttt{no\_short=True}, it additionally imposes \[
+  w_i \ge 0 \quad \text{for all } i.
+  \] Internally, the function maps this problem to the
+  \texttt{quadprog.solve\_qp} format
+  \(\min_w \tfrac12 w^\top G w - a^\top w \;\text{s.t.}\; C^\top w \ge b\)
+  and returns the optimal weights \(w^\star\).
+\item
+  \texttt{portfolio\_stats} is a small helper that takes a weight vector
+  \(w\) and computes its annualised expected return, volatility and
+  Sharpe ratio (with risk-free rate \(r_f\)): \[
+  R_p = w^\top \mu, \qquad
+  \sigma_p = \sqrt{w^\top \Sigma w}, \qquad
+  \text{Sharpe} = \frac{R_p - r_f}{\sigma_p}.
+  \]
+\end{itemize}
+
+These two routines will be used next to construct the mean-variance
+efficient frontier and to identify the tangency portfolio.
+
+    \hypertarget{efficient-frontier-unconstrained}{%
+\subsubsection{2.3 Efficient frontier
+(unconstrained)}\label{efficient-frontier-unconstrained}}
+
+We compute the mean--variance efficient frontier by solving a sequence
+of minimum-variance problems for a grid of target returns. Using the
+plug-in estimates \(\mu\) and \(\Sigma\) from Section 2.1, we now build
+the mean--variance efficient frontier without any constraints on
+short-selling.
+
+First, we create a grid of target annualized returns between the minimum
+and maximum sample means of the assets. For each target return in this
+grid, we call \texttt{solve\_mv\_target\_return\_quadprog} to find the
+portfolio with the lowest variance that
+
+\begin{itemize}
+\tightlist
+\item
+  is fully invested (\(1^\top w = 1\)), and\\
+\item
+  has expected return equal to the chosen target.
+\end{itemize}
+
+For every solution we record the portfolio's annualized return,
+volatility, and Sharpe ratio, which gives us the set of points used to
+trace the unconstrained efficient frontier.
+
+In addition to the frontier, we compute the \textbf{tangency portfolio}
+using the closed-form formula from the course notes, \[
+w_T = \frac{\Sigma^{-1} \mu_{\text{excess}}}{\mathbf{1}^\top \Sigma^{-1} \mu_{\text{excess}}},
+\] where \(\mu_{\text{excess}}\) denotes the vector of excess expected
+returns. Since we set \(r_f = 0\) in this assignment, we have
+\(\mu_{\text{excess}} = \mu\). This gives us the portfolio with the
+maximum Sharpe ratio when short-selling is allowed.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Grid of target returns (annualized)}
+\PY{c+c1}{\PYZsh{} We take a reasonable range based on asset annualized means}
+\PY{n}{target\PYZus{}grid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{mu}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{mu}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{60}\PY{p}{)}
+
+\PY{n}{frontier\PYZus{}uncon} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{weights\PYZus{}uncon} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{t\PYZus{}ret} \PY{o+ow}{in} \PY{n}{target\PYZus{}grid}\PY{p}{:}
+    \PY{n}{w} \PY{o}{=} \PY{n}{solve\PYZus{}mv\PYZus{}target\PYZus{}return\PYZus{}quadprog}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{Sigma}\PY{p}{,} \PY{n}{t\PYZus{}ret}\PY{p}{,} \PY{n}{no\PYZus{}short}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    \PY{n}{ret}\PY{p}{,} \PY{n}{vol}\PY{p}{,} \PY{n}{sh} \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{Sigma}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+    \PY{n}{frontier\PYZus{}uncon}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{ret}\PY{p}{,} \PY{n}{vol}\PY{p}{,} \PY{n}{sh}\PY{p}{)}\PY{p}{)}
+    \PY{n}{weights\PYZus{}uncon}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{w}\PY{p}{)}
+
+\PY{n}{frontier\PYZus{}uncon} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{frontier\PYZus{}uncon}\PY{p}{)}  \PY{c+c1}{\PYZsh{} columns: ret, vol, sharpe}
+
+\PY{c+c1}{\PYZsh{} Tangency portfolio (based on course notes)}
+\PY{c+c1}{\PYZsh{} w\PYZus{}T = Σ\PYZca{}\PYZob{}\PYZhy{}1\PYZcb{} μ\PYZus{}excess / (1\PYZsq{} Σ\PYZca{}\PYZob{}\PYZhy{}1\PYZcb{} μ\PYZus{}excess)}
+
+\PY{c+c1}{\PYZsh{} Solve Σ x = μ\PYZus{}excess instead of explicitly inverting Σ}
+\PY{n}{numer} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{Sigma}\PY{p}{,} \PY{n}{mu\PYZus{}excess}\PY{p}{)}     \PY{c+c1}{\PYZsh{} = Σ\PYZca{}\PYZob{}\PYZhy{}1\PYZcb{} μ\PYZus{}excess}
+\PY{n}{denom} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)} \PY{o}{@} \PY{n}{numer}
+\PY{n}{w\PYZus{}tan\PYZus{}uncon} \PY{o}{=} \PY{n}{numer} \PY{o}{/} \PY{n}{denom}
+
+\PY{n}{tan\PYZus{}ret\PYZus{}uncon}\PY{p}{,} \PY{n}{tan\PYZus{}vol\PYZus{}uncon}\PY{p}{,} \PY{n}{tan\PYZus{}sh\PYZus{}uncon} \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w\PYZus{}tan\PYZus{}uncon}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{Sigma}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+
+\PY{n}{w\PYZus{}tan\PYZus{}uncon}\PY{p}{,} \PY{n}{tan\PYZus{}ret\PYZus{}uncon}\PY{p}{,} \PY{n}{tan\PYZus{}vol\PYZus{}uncon}\PY{p}{,} \PY{n}{tan\PYZus{}sh\PYZus{}uncon}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+(array([-0.48237118,  3.07841857,  4.02783384, -6.68241971,  0.44634165,
+        -0.8347226 ,  1.73123959, -0.28432016]),
+ 0.48312455032742124,
+ 0.42391369373720833,
+ 1.1396766782129921)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The tangency portfolio without short-sale constraints has the following
+properties:
+
+\begin{itemize}
+\item
+  The weight vector \(w_T\) satisfies \(\sum_i w_{T,i} = 1\), but
+  several positions are very large in absolute value (both long and
+  short).\\
+  Numerically, the leverage is high, with
+  \(\sum_i |w_{T,i}| \approx 17.6\), so this is a strongly levered
+  long--short portfolio.
+\item
+  Annualised expected return: \(R_T \approx 48.3\%\).
+\item
+  Annualised volatility: \(\sigma_T \approx 42.4\%\).
+\item
+  Sharpe ratio (with \(r_f = 0\)): \(\text{Sharpe}_T \approx 1.14\).
+\end{itemize}
+
+These results are consistent with the Markowitz theory: once
+short-selling is allowed without additional constraints, the tangency
+portfolio exploits small differences in risk-adjusted performance across
+indices, which leads to very concentrated and highly levered positions.
+In practice, such a portfolio would be hard to implement for an investor
+facing leverage or risk limits, which motivates repeating the exercise
+with a non-negativity constraint on the weights.
+
+    \hypertarget{plot-assets-efficient-frontier-and-tangency-portfolio-unconstrained}{%
+\subsubsection{2.4 Plot: assets, efficient frontier, and tangency
+portfolio
+(unconstrained)}\label{plot-assets-efficient-frontier-and-tangency-portfolio-unconstrained}}
+
+We now visualise the results in annualised units (assuming \(r_f = 0\)):
+
+\begin{itemize}
+\tightlist
+\item
+  Individual assets, plotted as points in the \((\sigma, \mu)\) plane,
+  where \(\sigma\) is annualised volatility and \(\mu\) is the
+  annualised expected return.\\
+\item
+  The mean--variance efficient frontier, obtained by solving the
+  minimum-variance problem for a grid of target returns
+  \(\mu_{\text{target}}\).\\
+\item
+  The tangency portfolio, located at \((\sigma_T, R_T)\), which
+  corresponds to the maximum Sharpe ratio
+  \(\text{Sharpe}_T = \dfrac{R_T - r_f}{\sigma_T}\) under unrestricted
+  short-selling.
+\end{itemize}
+
+This plot allows us to compare the historical risk--return profiles of
+the individual indices with the set of portfolios that are optimal in
+the Markowitz sense, and to highlight where the tangency portfolio lies
+on the unconstrained efficient frontier.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 2.3 Efficient frontier (unconstrained) – recomputed up to tangency return}
+
+\PY{c+c1}{\PYZsh{} Grid of target returns (annualised)}
+\PY{c+c1}{\PYZsh{} We go from the minimum sample mean up to slightly above the tangency return}
+\PY{n}{target\PYZus{}grid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{mu}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{tan\PYZus{}ret\PYZus{}uncon} \PY{o}{*} \PY{l+m+mf}{1.1}\PY{p}{,} \PY{l+m+mi}{80}\PY{p}{)}
+
+\PY{n}{frontier\PYZus{}uncon} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{weights\PYZus{}uncon} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{t\PYZus{}ret} \PY{o+ow}{in} \PY{n}{target\PYZus{}grid}\PY{p}{:}
+    \PY{n}{w} \PY{o}{=} \PY{n}{solve\PYZus{}mv\PYZus{}target\PYZus{}return\PYZus{}quadprog}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{Sigma}\PY{p}{,} \PY{n}{t\PYZus{}ret}\PY{p}{,} \PY{n}{no\PYZus{}short}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    \PY{n}{ret}\PY{p}{,} \PY{n}{vol}\PY{p}{,} \PY{n}{sh} \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{Sigma}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+    \PY{n}{frontier\PYZus{}uncon}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{ret}\PY{p}{,} \PY{n}{vol}\PY{p}{,} \PY{n}{sh}\PY{p}{)}\PY{p}{)}
+    \PY{n}{weights\PYZus{}uncon}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{w}\PY{p}{)}
+
+\PY{n}{frontier\PYZus{}uncon} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{frontier\PYZus{}uncon}\PY{p}{)}  \PY{c+c1}{\PYZsh{} columns: [ret, vol, sharpe]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 1) Individual assets}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{sigma\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{mu\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Assets}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{name} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{assets}\PY{p}{)}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{n}{name}\PY{p}{,}
+                 \PY{p}{(}\PY{n}{sigma\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{mu\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                 \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 2) Unconstrained efficient frontier}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frontier\PYZus{}uncon}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{frontier\PYZus{}uncon}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+         \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Efficient frontier (unconstrained)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 3) Tangency portfolio}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{p}{[}\PY{n}{tan\PYZus{}vol\PYZus{}uncon}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{n}{tan\PYZus{}ret\PYZus{}uncon}\PY{p}{]}\PY{p}{,}
+            \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency (unconstrained)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 4) Capital Market Line (rf = 0 =\PYZgt{} line from origin to tangency)}
+\PY{n}{vol\PYZus{}line} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{tan\PYZus{}vol\PYZus{}uncon} \PY{o}{*} \PY{l+m+mf}{1.05}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{)}
+\PY{n}{ret\PYZus{}line} \PY{o}{=} \PY{p}{(}\PY{n}{tan\PYZus{}ret\PYZus{}uncon} \PY{o}{/} \PY{n}{tan\PYZus{}vol\PYZus{}uncon}\PY{p}{)} \PY{o}{*} \PY{n}{vol\PYZus{}line}  \PY{c+c1}{\PYZsh{} slope = Sharpe\PYZus{}T}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{vol\PYZus{}line}\PY{p}{,} \PY{n}{ret\PYZus{}line}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital Market Line}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mean\PYZhy{}Variance Efficient Frontier (Unconstrained)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized volatility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized expected return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_67_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The plot shows the \textbf{unconstrained Markowitz world} in one
+picture.
+
+The blue dots are the individual indices \((\sigma_i, \mu_i)\). Most of
+them sit clearly \textbf{below} the blue efficient frontier: for the
+same volatility, a suitably diversified portfolio can deliver a higher
+expected return than any single index.
+
+The blue curve is the \textbf{mean--variance efficient frontier}
+obtained from our quadratic program with\\
+\(1^\top w = 1\) and \(\mu^\top w = \mu_{\text{target}}\). The orange
+star is the \textbf{tangency portfolio}: it lies on the frontier and
+achieves the highest Sharpe ratio. Its location, far above and to the
+right of the indices, is consistent with the very levered long--short
+weights we obtained numerically.
+
+Finally, the dashed orange line is the \textbf{Capital Market Line}.
+With \(r_f = 0\), it runs from the origin through the tangency
+portfolio. Any combination of the risk-free asset and the tangency
+portfolio lies on this line and dominates the rest of the frontier in
+terms of expected return per unit of risk.
+
+    \hypertarget{efficient-frontier-with-no-short-sale-constraint-w-ge-0}{%
+\subsubsection{\texorpdfstring{2.5 Efficient frontier with no short-sale
+constraint
+(\(w \ge 0\))}{2.5 Efficient frontier with no short-sale constraint (w \textbackslash ge 0)}}\label{efficient-frontier-with-no-short-sale-constraint-w-ge-0}}
+
+We now recompute the mean--variance efficient frontier \textbf{imposing
+non-negative weights}, i.e. \(w_i \ge 0\) for all assets. The
+optimization problem becomes:
+
+\begin{itemize}
+\tightlist
+\item
+  fully invested: \(1^\top w = 1\)\\
+\item
+  target return: \(\mu^\top w = \mu_{\text{target}}\)\\
+\item
+  no short-selling: \(w_i \ge 0\) for all \(i\).
+\end{itemize}
+
+For each target return on the same grid as before, we solve the
+constrained minimum-variance problem and record the corresponding
+portfolio return, volatility and Sharpe ratio.
+
+The \textbf{constrained tangency portfolio} is then defined as the
+portfolio on this no-short-sale frontier that attains the
+\textbf{highest Sharpe ratio} (with \(r_f = 0\)).
+
+    Because we impose a no short-sale constraint (\(w \ge 0\)), not every
+target return on the grid is necessarily feasible. In practice, for some
+high \(\mu_{\text{target}}\) the optimizer cannot find a portfolio that
+satisfies simultaneously: - \(1^\top w = 1\), -
+\(\mu^\top w = \mu_{\text{target}}\), - and \(w_i \ge 0\) for all \(i\).
+
+We therefore solve the optimization over the whole grid of target
+returns and retain only the portfolios for which the constraints admit a
+valid solution.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Efficient frontier with no short\PYZhy{}selling (w \PYZgt{}= 0)}
+\PY{c+c1}{\PYZsh{} We keep only feasible targets, and define the constrained tangency}
+\PY{c+c1}{\PYZsh{} as the portfolio on this frontier with the highest Sharpe ratio.}
+\PY{n}{frontier\PYZus{}noshort} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{weights\PYZus{}noshort} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{targets\PYZus{}ok} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{t\PYZus{}ret} \PY{o+ow}{in} \PY{n}{target\PYZus{}grid}\PY{p}{:}
+    \PY{k}{try}\PY{p}{:}
+        \PY{n}{w} \PY{o}{=} \PY{n}{solve\PYZus{}mv\PYZus{}target\PYZus{}return\PYZus{}quadprog}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{Sigma}\PY{p}{,} \PY{n}{t\PYZus{}ret}\PY{p}{,} \PY{n}{no\PYZus{}short}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+        \PY{n}{ret}\PY{p}{,} \PY{n}{vol}\PY{p}{,} \PY{n}{sh} \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{Sigma}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+        \PY{n}{frontier\PYZus{}noshort}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{ret}\PY{p}{,} \PY{n}{vol}\PY{p}{,} \PY{n}{sh}\PY{p}{)}\PY{p}{)}
+        \PY{n}{weights\PYZus{}noshort}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{w}\PY{p}{)}
+        \PY{n}{targets\PYZus{}ok}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{t\PYZus{}ret}\PY{p}{)}
+    \PY{k}{except} \PY{n+ne}{ValueError}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} infeasible target under no\PYZhy{}short constraints \PYZhy{}\PYZgt{} skip}
+        \PY{k}{continue}
+
+\PY{n}{frontier\PYZus{}noshort} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{frontier\PYZus{}noshort}\PY{p}{)}
+\PY{n}{targets\PYZus{}ok} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{targets\PYZus{}ok}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Tangency under no\PYZhy{}short: pick the feasible portfolio with the highest Sharpe ratio}
+\PY{n}{idx\PYZus{}best} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{nanargmax}\PY{p}{(}\PY{n}{frontier\PYZus{}noshort}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+\PY{n}{w\PYZus{}tan\PYZus{}noshort} \PY{o}{=} \PY{n}{weights\PYZus{}noshort}\PY{p}{[}\PY{n}{idx\PYZus{}best}\PY{p}{]}
+\PY{n}{tan\PYZus{}ret\PYZus{}ns}\PY{p}{,} \PY{n}{tan\PYZus{}vol\PYZus{}ns}\PY{p}{,} \PY{n}{tan\PYZus{}sh\PYZus{}ns} \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w\PYZus{}tan\PYZus{}noshort}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{Sigma}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+
+\PY{n}{w\PYZus{}tan\PYZus{}noshort}\PY{p}{,} \PY{n}{tan\PYZus{}ret\PYZus{}ns}\PY{p}{,} \PY{n}{tan\PYZus{}vol\PYZus{}ns}\PY{p}{,} \PY{n}{tan\PYZus{}sh\PYZus{}ns}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+(array([ 2.29123294e-17, -1.65743820e-16, -8.17809318e-19,  5.97683119e-16,
+         1.25196383e-01,  2.27230016e-17,  8.74803617e-01, -2.65560562e-17]),
+ 0.08773417759756144,
+ 0.1944395532294103,
+ 0.45121569217991314)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The tangency portfolio \textbf{with no short-selling} has the following
+properties:
+
+\begin{itemize}
+\item
+  The weight vector is essentially long-only in two indices.\\
+  Numerically, we obtain\\
+  \[
+  w_T \approx 
+  (0,\ 0,\ 0,\ 0,\ 0.125,\ 0,\ 0.875,\ 0),
+  \] up to tiny numerical rounding errors (of order \(10^{-16}\)).
+
+  So the constrained tangency portfolio is roughly \textbf{12.5\% in
+  NIKKEI225} and \textbf{87.5\% in SP500}, with all other weights very
+  close to zero. It still satisfies the budget constraint
+  \(\sum_i w_{T,i} = 1\) and remains fully invested, but without any
+  leverage.
+\item
+  Annualised expected return:\\
+  \[
+  R_T \approx 8.8\%.
+  \]
+\item
+  Annualised volatility:\\
+  \[
+  \sigma_T \approx 19.4\%.
+  \]
+\item
+  Sharpe ratio (with \(r_f = 0\)):\\
+  \[
+  \text{Sharpe}_T \approx 0.45.
+  \]
+\end{itemize}
+
+Compared to the \textbf{unconstrained} tangency portfolio (which was
+highly levered and long--short with \(\text{Sharpe} \approx 1.14\)), the
+\textbf{no-short} tangency portfolio is much more realistic from a
+practical point of view: it is long-only, far less risky in terms of
+volatility and leverage, but this comes at the cost of a lower Sharpe
+ratio.
+
+Intuitively, once short-selling is forbidden, the optimizer can no
+longer exploit extreme long--short positions, and ends up concentrating
+on the indices with the best standalone risk--return profile (here
+mainly the SP500, with a small allocation to NIKKEI225 for
+diversification).
+
+    We clean the tangency weights by setting to zero all entries with
+absolute value below a small numerical tolerance (e.g.~\(10^{-10}\)), so
+that the portfolio vector is easier to read. We then check that the
+cleaned weights still sum to one, which confirms that the fully invested
+constraint \(\mathbf{1}^\top w = 1\) remains satisfied after rounding.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tol} \PY{o}{=} \PY{l+m+mf}{1e\PYZhy{}10}
+\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean} \PY{o}{=} \PY{n}{w\PYZus{}tan\PYZus{}noshort}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{tol}\PY{p}{]} \PY{o}{=} \PY{l+m+mf}{0.0}
+
+\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean}\PY{p}{,} \PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+(array([0.        , 0.        , 0.        , 0.        , 0.12519638,
+        0.        , 0.87480362, 0.        ]),
+ np.float64(0.9999999999999997))
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Sum weights:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{w\PYZus{}tan\PYZus{}noshort}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Min weight:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{w\PYZus{}tan\PYZus{}noshort}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Sum weights: 1.0000000000000002
+Min weight: -1.6574381969086036e-16
+    \end{Verbatim}
+
+    The cleaned no-short-sale tangency portfolio has weights
+
+\(w_T \approx (0,\;0,\;0,\;0,\;0.1252,\;0,\;0.8748,\;0)\),
+
+which means that the optimal constrained portfolio is effectively a
+two-asset portfolio: about \(12.5\%\) in NIKKEI225 and \(87.5\%\) in
+SP500, with zero weight on all the other indices. The cleaned weights
+still satisfy
+
+\(\sum_i w_i \approx 1.0000000000000002 \simeq 1\),
+
+and the raw solution gives
+
+\(\text{Sum weights} = 1.0\),
+\(\min_i w_i \approx -2.8 \times 10^{-16}\).
+
+This tiny negative value is just a numerical rounding error and can
+safely be treated as zero, so the non-negativity constraints
+\(w_i \ge 0\) and the fully-invested constraint
+\(\mathbf{1}^\top w = 1\) are both satisfied in practice.
+
+    Now we clean the no-short tangency portfolio by forcing very small
+numerical values to zero: any weight with absolute value below
+\(10^{-10}\) is treated as zero. This gets rid of tiny negative numbers
+that only come from floating point rounding. We then convert the cleaned
+weight vector into a \texttt{pandas} Series with the asset names as the
+index, so that we can clearly see how the portfolio is allocated.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{w\PYZus{}tan\PYZus{}noshort}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1e\PYZhy{}10}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{w\PYZus{}tan\PYZus{}noshort}\PY{p}{)}
+\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{assets}\PY{p}{)}
+\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+TSX            0.000000
+CAC            0.000000
+DAX            0.000000
+Eurostoxx50    0.000000
+NIKKEI225      0.125196
+FTSE100        0.000000
+SP500          0.874804
+IBOVESPA       0.000000
+dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The cleaned no--short-sale tangency portfolio allocates:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{87.48\%} of wealth to \textbf{SP500}
+\item
+  \textbf{12.52\%} of wealth to \textbf{NIKKEI225}
+\item
+  \textbf{0\%} to all other indices (TSX, CAC, DAX, Eurostoxx50,
+  FTSE100, IBOVESPA)
+\end{itemize}
+
+In other words, the optimal constrained tangency portfolio is
+effectively a \textbf{two-asset long-only portfolio}, heavily tilted
+towards the US equity market (SP500) with a smaller satellite position
+in Japanese equities (NIKKEI225). This confirms that, once short-selling
+is ruled out, the optimizer concentrates the entire allocation on the
+two indices with the best risk--return trade-off in the sample.
+
+    \hypertarget{plot-unconstrained-vs-no-short-efficient-frontiers}{%
+\subsubsection{2.6 Plot: unconstrained vs no-short efficient
+frontiers}\label{plot-unconstrained-vs-no-short-efficient-frontiers}}
+
+We now put everything together in a single figure.\\
+We plot the individual indices using their annualized mean return and
+volatility, then overlay the two efficient frontiers:
+
+\begin{itemize}
+\tightlist
+\item
+  the unconstrained frontier (short-selling allowed), and\\
+\item
+  the frontier with the no short-sale constraint (\(w \ge 0\)).
+\end{itemize}
+
+On top of that, we mark the tangency portfolio in each case, so we can
+directly see how the shape of the frontier and the location of the
+optimal portfolio change once we rule out short positions.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Assets}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{sigma\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{mu\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Assets}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{name} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{assets}\PY{p}{)}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{n}{name}\PY{p}{,}
+                 \PY{p}{(}\PY{n}{sigma\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{mu\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                 \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Frontiers}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frontier\PYZus{}uncon}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{frontier\PYZus{}uncon}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+         \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unconstrained frontier}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frontier\PYZus{}noshort}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{frontier\PYZus{}noshort}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+         \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No\PYZhy{}short frontier}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Tangency points}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{p}{[}\PY{n}{tan\PYZus{}vol\PYZus{}uncon}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{n}{tan\PYZus{}ret\PYZus{}uncon}\PY{p}{]}\PY{p}{,}
+            \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency (unconstrained)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{p}{[}\PY{n}{tan\PYZus{}vol\PYZus{}ns}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{n}{tan\PYZus{}ret\PYZus{}ns}\PY{p}{]}\PY{p}{,}
+            \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency (no\PYZhy{}short)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Efficient Frontier: Unconstrained vs No Short\PYZhy{}Sale}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized volatility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized expected return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We keep a large scale to see both tangencies}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{l+m+mf}{0.15}\PY{p}{,} \PY{l+m+mf}{0.45}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+m+mf}{0.55}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_81_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    This plot compares the Markowitz world with and without short-selling.
+
+\begin{itemize}
+\item
+  The \textbf{blue curve} is the unconstrained frontier. The
+  \textbf{orange curve} is the no-short frontier. The blue one sits
+  clearly \textbf{above} the orange one, which shows that allowing short
+  positions (and leverage) gives strictly better risk--return
+  trade-offs.
+\item
+  The \textbf{orange star} (unconstrained tangency) is very far to the
+  right, with high volatility and a very high expected return. This is
+  the crazy long--short portfolio with large positive and negative
+  weights we found earlier.
+\item
+  The \textbf{green star} (no-short tangency) is much closer to the
+  equity indices. With \(w_i \ge 0\), the optimal portfolio looks like a
+  standard long-only equity mix: lower volatility, lower expected
+  return, and a lower Sharpe compared to the unconstrained case.
+\end{itemize}
+
+So visually we see the trade-off: allowing short-selling boosts the
+efficient frontier and the Sharpe ratio, but at the cost of very extreme
+portfolios.
+
+    We now add a second figure to \textbf{zoom in} on the realistic region
+of the plot (volatility around 15--30\%, returns below 15\%). On the
+full-scale graph, the unconstrained tangency portfolio is so extreme
+that it compresses everything else.
+
+The zoomed figure lets us clearly compare the unconstrained and no-short
+frontiers around the indices, and see where the no-short tangency
+portfolio sits relative to the actual assets.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Second figure: zoom on realistic region (no\PYZhy{}short frontier and assets)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Assets}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{sigma\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{mu\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Assets}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{name} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{assets}\PY{p}{)}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{n}{name}\PY{p}{,}
+                 \PY{p}{(}\PY{n}{sigma\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{mu\PYZus{}series}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                 \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Frontiers (we can keep both but the zoom value the no\PYZhy{}short)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frontier\PYZus{}uncon}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{frontier\PYZus{}uncon}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+         \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unconstrained frontier}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frontier\PYZus{}noshort}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{frontier\PYZus{}noshort}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+         \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No\PYZhy{}short frontier}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Tangency points}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{p}{[}\PY{n}{tan\PYZus{}vol\PYZus{}ns}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{n}{tan\PYZus{}ret\PYZus{}ns}\PY{p}{]}\PY{p}{,}
+            \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency (no\PYZhy{}short)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Efficient Frontier (Zoom on Realistic Region)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized volatility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized expected return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Zoom on the zone where indexes live and the tangency no\PYZhy{}short}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{l+m+mf}{0.15}\PY{p}{,} \PY{l+m+mf}{0.35}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+m+mf}{0.15}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_84_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    On the zoomed plot we focus on the ``realistic'' region (volatility
+between about 15\% and 35\%, returns between −5\% and 15\%). This is why
+\textbf{IBOVESPA does not appear} here: its annual volatility is around
+40\%, so it lies outside the chosen \(x\)-axis range.
+
+In this region we clearly see that:
+
+\begin{itemize}
+\item
+  The \textbf{no-short frontier} (orange) is below the
+  \textbf{unconstrained frontier} (blue), as expected: once we forbid
+  short positions, the set of feasible portfolios shrinks and
+  risk--return trade-offs become worse.
+\item
+  The \textbf{no-short tangency portfolio} (orange star) sits around
+  19\% volatility and 8.8\% expected return. It lies above all
+  individual indices in this zoom, especially above the SP500 point,
+  which shows that a long-only combination of NIKKEI225 and SP500 can
+  still dominate any single market index in terms of Sharpe ratio.
+\end{itemize}
+
+Overall, the zoomed figure makes it easier to compare the two frontiers
+and to see that the long-only efficient set is much closer to the cloud
+of indices than the extreme unconstrained frontier.
+
+    \hypertarget{portfolio-weights}{%
+\subsubsection{2.7 Portfolio weights}\label{portfolio-weights}}
+
+We now report and compare the tangency portfolio weights for:
+
+\begin{itemize}
+\tightlist
+\item
+  the unconstrained case (short-selling allowed), and\\
+\item
+  the no short-sale case (weights constrained to be non-negative).
+\end{itemize}
+
+This allows us to see how the no-short constraint changes the
+composition and concentration of the optimal portfolio.
+
+    To make the comparison more transparent, we collect the tangency
+portfolio weights in a single table. The first column reports the
+weights of the unconstrained tangency portfolio (short-selling allowed),
+and the second column shows the tangency portfolio when we impose the no
+short-sale constraint \(w_i \ge 0\). In both cases, the weights sum to
+one.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Reminder: w\PYZus{}tan\PYZus{}uncon, w\PYZus{}tan\PYZus{}noshort et w\PYZus{}tan\PYZus{}noshort\PYZus{}clean already computed above}
+
+\PY{c+c1}{\PYZsh{} Table of tangency portfolio weights}
+\PY{n}{weights\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency\PYZus{}Unconstrained}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{w\PYZus{}tan\PYZus{}uncon}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency\PYZus{}NoShort}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}clean}  \PY{c+c1}{\PYZsh{} cleaned version (we set tiny values to 0)}
+\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{assets}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Rounded version for a better presentation!}
+\PY{n}{weights\PYZus{}df\PYZus{}rounded} \PY{o}{=} \PY{n}{weights\PYZus{}df}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{weights\PYZus{}df\PYZus{}rounded}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+             Tangency\_Unconstrained  Tangency\_NoShort
+TSX                         -0.4824            0.0000
+CAC                          3.0784            0.0000
+DAX                          4.0278            0.0000
+Eurostoxx50                 -6.6824            0.0000
+NIKKEI225                    0.4463            0.1252
+FTSE100                     -0.8347            0.0000
+SP500                        1.7312            0.8748
+IBOVESPA                    -0.2843            0.0000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We now compare the tangency portfolios with and without short-selling:
+
+\begin{itemize}
+\item
+  In the \textbf{unconstrained case}, the optimizer uses very
+  \textbf{large long and short positions}.\\
+  For example, it takes big long positions in \textbf{CAC} and
+  \textbf{DAX}, but also large short positions in \textbf{Eurostoxx50},
+  \textbf{TSX}, \textbf{FTSE100} and \textbf{IBOVESPA}. The weights
+  still sum to 1, but \(\sum_i |w_i|\) is much larger than 1, which
+  means the portfolio is highly levered. This is a typical feature of
+  the Markowitz solution when we do not impose any practical constraint.
+\item
+  With the \textbf{no short-sale constraint} (\(w_i \ge 0\)), the
+  tangency portfolio becomes much simpler and more realistic: it is
+  essentially a combination of \textbf{SP500} (about \(87\%\)) and
+  \textbf{NIKKEI225} (about \(13\%\)), with zero weight on all other
+  indices. Under our plug-in estimates, these two markets offer the best
+  trade-off between risk and return once we rule out short positions.
+\end{itemize}
+
+Overall, the comparison clearly shows that short-selling leads to very
+extreme and levered Markowitz portfolios, while the no-short constraint
+produces a more concentrated but more plausible allocation.
+
+    \hypertarget{conclusion-for-question-2}{%
+\subsubsection{2.8 Conclusion for Question
+2}\label{conclusion-for-question-2}}
+
+In this part, we used historical daily USD returns to estimate
+annualised means \(\mu\) and the covariance matrix \(\Sigma\), and we
+mapped the Markowitz problem into the \texttt{quadprog.solve\_qp} format
+with the constraints \(1^\top w = 1\) and
+\(\mu^\top w = \mu_{\text{target}}\).
+
+On this basis we traced the mean--variance efficient frontier and found
+the \textbf{unconstrained tangency portfolio}, with annualised return
+\(R_T \approx 48.3\%\), volatility \(\sigma_T \approx 42.4\%\) and
+Sharpe ratio \(\text{Sharpe}_T \approx 1.14\). It looks extremely
+attractive on paper, but it achieves this performance by taking very
+large long and short positions (leverage \(\sum_i |w_i| \approx 17.6\)),
+which would be hard to implement in practice because of margin
+requirements, risk limits and typical regulations for institutional
+investors.
+
+When we repeat the exercise under the \textbf{no short-sale constraint}
+\(w_i \ge 0\), the efficient frontier shifts down and the tangency
+portfolio becomes a much more realistic long-only allocation: roughly
+\(87.5\%\) in SP500 and \(12.5\%\) in NIKKEI225, with annualised return
+\(R_T \approx 8.8\%\), volatility \(\sigma_T \approx 19.4\%\) and Sharpe
+ratio \(\text{Sharpe}_T \approx 0.45\). The constrained portfolio is
+less ``impressive'\,' in terms of Sharpe ratio, but it is far closer to
+what an actual fund (e.g.~a pension fund with capital and regulatory
+constraints) could hold.
+
+Overall, Question 2 shows clearly how adding simple constraints like
+\(w_i \ge 0\) dramatically changes both the efficient frontier and the
+composition of the ``optimal'\,' portfolio.
+
+    \hypertarget{question-3-mean-variance-mv-analysis-2}{%
+\subsection{Question 3 -- Mean-Variance (MV) analysis
+\#2}\label{question-3-mean-variance-mv-analysis-2}}
+
+In this part we repeat the mean--variance analysis using rolling 5-year
+windows.\\
+The idea is to mimic an investor who periodically re-estimates expected
+returns and covariances using only the most recent 5 years of data, and
+then updates their optimal portfolio.
+
+Concretely, we start with the window from 2010--2014, then roll the
+window forward one year at a time until the last window 2017--2021. For
+each window, we compute the mean--variance tangency portfolio (using the
+same plug-in estimates and \texttt{quadprog} mapping as in Question 2),
+and at the end we compare these time-varying MV weights to the
+corresponding market cap-based weights.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define 5\PYZhy{}year rolling windows by calendar year}
+\PY{n}{window\PYZus{}years} \PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{l+m+mi}{2010}\PY{p}{,} \PY{l+m+mi}{2014}\PY{p}{)}\PY{p}{,}
+                \PY{p}{(}\PY{l+m+mi}{2011}\PY{p}{,} \PY{l+m+mi}{2015}\PY{p}{)}\PY{p}{,}
+                \PY{p}{(}\PY{l+m+mi}{2012}\PY{p}{,} \PY{l+m+mi}{2016}\PY{p}{)}\PY{p}{,}
+                \PY{p}{(}\PY{l+m+mi}{2013}\PY{p}{,} \PY{l+m+mi}{2017}\PY{p}{)}\PY{p}{,}
+                \PY{p}{(}\PY{l+m+mi}{2014}\PY{p}{,} \PY{l+m+mi}{2018}\PY{p}{)}\PY{p}{,}
+                \PY{p}{(}\PY{l+m+mi}{2015}\PY{p}{,} \PY{l+m+mi}{2019}\PY{p}{)}\PY{p}{,}
+                \PY{p}{(}\PY{l+m+mi}{2016}\PY{p}{,} \PY{l+m+mi}{2020}\PY{p}{)}\PY{p}{,}
+                \PY{p}{(}\PY{l+m+mi}{2017}\PY{p}{,} \PY{l+m+mi}{2021}\PY{p}{)}\PY{p}{]}
+
+\PY{n}{window\PYZus{}labels} \PY{o}{=} \PY{p}{[}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{start}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+si}{\PYZob{}}\PY{n}{end}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}} \PY{k}{for} \PY{p}{(}\PY{n}{start}\PY{p}{,} \PY{n}{end}\PY{p}{)} \PY{o+ow}{in} \PY{n}{window\PYZus{}years}\PY{p}{]}
+\PY{n}{window\PYZus{}labels}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+['2010-2014',
+ '2011-2015',
+ '2012-2016',
+ '2013-2017',
+ '2014-2018',
+ '2015-2019',
+ '2016-2020',
+ '2017-2021']
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{rolling-window-set-up-and-estimation}{%
+\subsubsection{3.1 Rolling-window set-up and
+estimation}\label{rolling-window-set-up-and-estimation}}
+
+For each 5-year window, we:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Restrict the daily log-return data to that period.
+\item
+  Recompute the annualized expected returns and covariance matrix.
+\item
+  Compute the unconstrained tangency portfolio using the closed-form
+  formula from the course notes.
+\item
+  Compute the no-short tangency portfolio by searching along the
+  constrained efficient frontier and picking the portfolio with the
+  highest Sharpe ratio.
+\end{enumerate}
+
+We then collect the weights across windows to see how unstable (or
+stable) the mean--variance portfolios are over time.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tan\PYZus{}uncon\PYZus{}weights} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{tan\PYZus{}noshort\PYZus{}weights} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{tan\PYZus{}uncon\PYZus{}stats} \PY{o}{=} \PY{p}{[}\PY{p}{]}   \PY{c+c1}{\PYZsh{} (ret, vol, sharpe)}
+\PY{n}{tan\PYZus{}noshort\PYZus{}stats} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{p}{(}\PY{n}{start\PYZus{}year}\PY{p}{,} \PY{n}{end\PYZus{}year}\PY{p}{)}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{window\PYZus{}years}\PY{p}{,} \PY{n}{window\PYZus{}labels}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Select 5\PYZhy{}year window }
+    \PY{n}{start\PYZus{}date} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{start\PYZus{}year}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZhy{}01\PYZhy{}01}\PY{l+s+s2}{\PYZdq{}}
+    \PY{n}{end\PYZus{}date} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{end\PYZus{}year}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZhy{}12\PYZhy{}31}\PY{l+s+s2}{\PYZdq{}}
+    \PY{n}{window\PYZus{}data} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{start\PYZus{}date}\PY{p}{:}\PY{n}{end\PYZus{}date}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{} If for some reason window is empty, skip}
+    \PY{k}{if} \PY{n}{window\PYZus{}data}\PY{o}{.}\PY{n}{empty}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Warning: no data for window }\PY{l+s+si}{\PYZob{}}\PY{n}{label}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{tan\PYZus{}uncon\PYZus{}weights}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{nan} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+        \PY{n}{tan\PYZus{}noshort\PYZus{}weights}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{nan} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+        \PY{n}{tan\PYZus{}uncon\PYZus{}stats}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{)}\PY{p}{)}
+        \PY{n}{tan\PYZus{}noshort\PYZus{}stats}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{)}\PY{p}{)}
+        \PY{k}{continue}
+    
+    \PY{c+c1}{\PYZsh{} We recompute daily mean and covariance for this window}
+    \PY{n}{mu\PYZus{}daily\PYZus{}w} \PY{o}{=} \PY{n}{window\PYZus{}data}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{values}
+    \PY{n}{Sigma\PYZus{}daily\PYZus{}w} \PY{o}{=} \PY{n}{window\PYZus{}data}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{values}
+    
+    \PY{n}{mu\PYZus{}w} \PY{o}{=} \PY{n}{mu\PYZus{}daily\PYZus{}w} \PY{o}{*} \PY{n}{ann\PYZus{}factor}
+    \PY{n}{Sigma\PYZus{}w} \PY{o}{=} \PY{n}{Sigma\PYZus{}daily\PYZus{}w} \PY{o}{*} \PY{n}{ann\PYZus{}factor}
+    \PY{n}{mu\PYZus{}excess\PYZus{}w} \PY{o}{=} \PY{n}{mu\PYZus{}w} \PY{o}{\PYZhy{}} \PY{n}{rf} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Unconstrained tangency (closed form)}
+    \PY{n}{invSigma\PYZus{}w} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{Sigma\PYZus{}w}\PY{p}{)}
+    \PY{n}{numer\PYZus{}w} \PY{o}{=} \PY{n}{invSigma\PYZus{}w} \PY{o}{@} \PY{n}{mu\PYZus{}excess\PYZus{}w}
+    \PY{n}{denom\PYZus{}w} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)} \PY{o}{@} \PY{n}{numer\PYZus{}w}
+    \PY{n}{w\PYZus{}tan\PYZus{}uncon\PYZus{}w} \PY{o}{=} \PY{n}{numer\PYZus{}w} \PY{o}{/} \PY{n}{denom\PYZus{}w}
+    
+    \PY{n}{ret\PYZus{}u}\PY{p}{,} \PY{n}{vol\PYZus{}u}\PY{p}{,} \PY{n}{sh\PYZus{}u} \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w\PYZus{}tan\PYZus{}uncon\PYZus{}w}\PY{p}{,} \PY{n}{mu\PYZus{}w}\PY{p}{,} \PY{n}{Sigma\PYZus{}w}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+    
+    \PY{n}{tan\PYZus{}uncon\PYZus{}weights}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{w\PYZus{}tan\PYZus{}uncon\PYZus{}w}\PY{p}{)}
+    \PY{n}{tan\PYZus{}uncon\PYZus{}stats}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{ret\PYZus{}u}\PY{p}{,} \PY{n}{vol\PYZus{}u}\PY{p}{,} \PY{n}{sh\PYZus{}u}\PY{p}{)}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} No\PYZhy{}short tangency: search along constrained frontier}
+    \PY{n}{target\PYZus{}grid\PYZus{}w} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{mu\PYZus{}w}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{mu\PYZus{}w}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{60}\PY{p}{)}
+    \PY{n}{frontier\PYZus{}noshort\PYZus{}w} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{weights\PYZus{}noshort\PYZus{}w} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    
+    \PY{k}{for} \PY{n}{t\PYZus{}ret} \PY{o+ow}{in} \PY{n}{target\PYZus{}grid\PYZus{}w}\PY{p}{:}
+        \PY{k}{try}\PY{p}{:}
+            \PY{n}{w\PYZus{}ns} \PY{o}{=} \PY{n}{solve\PYZus{}mv\PYZus{}target\PYZus{}return\PYZus{}quadprog}\PY{p}{(}\PY{n}{mu\PYZus{}w}\PY{p}{,} \PY{n}{Sigma\PYZus{}w}\PY{p}{,} \PY{n}{t\PYZus{}ret}\PY{p}{,} \PY{n}{no\PYZus{}short}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+            \PY{n}{r\PYZus{}ns}\PY{p}{,} \PY{n}{v\PYZus{}ns}\PY{p}{,} \PY{n}{s\PYZus{}ns} \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w\PYZus{}ns}\PY{p}{,} \PY{n}{mu\PYZus{}w}\PY{p}{,} \PY{n}{Sigma\PYZus{}w}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+            \PY{n}{frontier\PYZus{}noshort\PYZus{}w}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{r\PYZus{}ns}\PY{p}{,} \PY{n}{v\PYZus{}ns}\PY{p}{,} \PY{n}{s\PYZus{}ns}\PY{p}{)}\PY{p}{)}
+            \PY{n}{weights\PYZus{}noshort\PYZus{}w}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{w\PYZus{}ns}\PY{p}{)}
+        \PY{k}{except} \PY{n+ne}{ValueError}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Infeasible target under no\PYZhy{}short \PYZhy{}\PYZgt{} skip}
+            \PY{k}{continue}
+    
+    \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{frontier\PYZus{}noshort\PYZus{}w}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} No feasible portfolio found (unlikely, but just in case)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Warning: no feasible no\PYZhy{}short solution for window }\PY{l+s+si}{\PYZob{}}\PY{n}{label}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{tan\PYZus{}noshort\PYZus{}weights}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{nan} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+        \PY{n}{tan\PYZus{}noshort\PYZus{}stats}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{)}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{frontier\PYZus{}noshort\PYZus{}w} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{frontier\PYZus{}noshort\PYZus{}w}\PY{p}{)}
+        \PY{n}{idx\PYZus{}best} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{nanargmax}\PY{p}{(}\PY{n}{frontier\PYZus{}noshort\PYZus{}w}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}  \PY{c+c1}{\PYZsh{} max Sharpe}
+        \PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}w} \PY{o}{=} \PY{n}{weights\PYZus{}noshort\PYZus{}w}\PY{p}{[}\PY{n}{idx\PYZus{}best}\PY{p}{]}
+        \PY{n}{r\PYZus{}ns}\PY{p}{,} \PY{n}{v\PYZus{}ns}\PY{p}{,} \PY{n}{s\PYZus{}ns} \PY{o}{=} \PY{n}{frontier\PYZus{}noshort\PYZus{}w}\PY{p}{[}\PY{n}{idx\PYZus{}best}\PY{p}{]}
+        
+        \PY{n}{tan\PYZus{}noshort\PYZus{}weights}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{w\PYZus{}tan\PYZus{}noshort\PYZus{}w}\PY{p}{)}
+        \PY{n}{tan\PYZus{}noshort\PYZus{}stats}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{r\PYZus{}ns}\PY{p}{,} \PY{n}{v\PYZus{}ns}\PY{p}{,} \PY{n}{s\PYZus{}ns}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    In this loop we basically rerun the full Markowitz procedure for each
+5-year window. For every window, we:
+
+\begin{itemize}
+\tightlist
+\item
+  recompute the annualised mean vector and covariance matrix using only
+  the returns in that period;
+\item
+  build an \textbf{unconstrained} tangency portfolio using the
+  closed-form \(\Sigma^{-1}\mu\) formula, and record its return,
+  volatility, and Sharpe ratio;
+\item
+  build a \textbf{no short-sale} tangency portfolio by scanning a grid
+  of target returns, solving the quadratic program with \(w \ge 0\), and
+  keeping the feasible portfolio with the highest Sharpe ratio.
+\end{itemize}
+
+We store both the weights and the performance statistics for each window
+so we can later turn them into DataFrames and see how these ``optimal''
+portfolios move over time.
+
+    \hypertarget{rolling-tangency-portfolios-instability-and-concentration}{%
+\subsubsection{3.2 Rolling tangency portfolios: instability and
+concentration}\label{rolling-tangency-portfolios-instability-and-concentration}}
+
+We now organise the rolling-window results into simple tables. The code
+below turns the stored weight vectors and performance statistics into
+DataFrames, with one row per 5-year window and one column per index (or
+per moment). This makes it easier to see how the tangency portfolios and
+their Sharpe ratios evolve over time, and to check how concentrated and
+unstable they are across windows.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tan\PYZus{}uncon\PYZus{}weights\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{tan\PYZus{}uncon\PYZus{}weights}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{window\PYZus{}labels}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{assets}\PY{p}{)}
+\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{tan\PYZus{}noshort\PYZus{}weights}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{window\PYZus{}labels}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{assets}\PY{p}{)}
+
+\PY{n}{tan\PYZus{}uncon\PYZus{}stats\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{tan\PYZus{}uncon\PYZus{}stats}\PY{p}{,} 
+                                  \PY{n}{index}\PY{o}{=}\PY{n}{window\PYZus{}labels}\PY{p}{,} 
+                                  \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ann\PYZus{}return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ann\PYZus{}vol}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sharpe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{tan\PYZus{}noshort\PYZus{}stats\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{tan\PYZus{}noshort\PYZus{}stats}\PY{p}{,} 
+                                    \PY{n}{index}\PY{o}{=}\PY{n}{window\PYZus{}labels}\PY{p}{,} 
+                                    \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ann\PYZus{}return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ann\PYZus{}vol}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sharpe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{tan\PYZus{}uncon\PYZus{}weights\PYZus{}df}\PY{p}{,} \PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}df}
+\PY{n}{tan\PYZus{}uncon\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+(             TSX    CAC    DAX  Eurostoxx50  NIKKEI225  FTSE100  SP500  \textbackslash{}
+ 2010-2014 -0.448 -1.038  2.196       -1.346      0.210    0.258  1.707
+ 2011-2015 -2.601  0.224  3.181       -3.174      0.771    0.218  3.707
+ 2012-2016 -0.740  2.337  2.649       -4.569      0.305   -0.524  1.768
+ 2013-2017 -0.556  2.431  1.987       -4.182      0.253   -0.319  1.488
+ 2014-2018 -2.489  9.735  4.944      -14.201      0.648   -1.118  3.180
+ 2015-2019 -1.101  6.911  2.983       -9.414      0.546   -0.632  1.455
+ 2016-2020 -0.440  6.160  4.921      -10.439      0.833   -1.396  1.139
+ 2017-2021 -0.550  5.453  2.211       -6.922      0.633   -1.006  1.599
+
+            IBOVESPA
+ 2010-2014    -0.538
+ 2011-2015    -1.326
+ 2012-2016    -0.226
+ 2013-2017    -0.102
+ 2014-2018     0.300
+ 2015-2019     0.253
+ 2016-2020     0.222
+ 2017-2021    -0.418  ,
+            TSX  CAC  DAX  Eurostoxx50  NIKKEI225  FTSE100  SP500  IBOVESPA
+ 2010-2014 -0.0  0.0 -0.0          0.0      0.123     -0.0  0.877     0.000
+ 2011-2015 -0.0  0.0 -0.0         -0.0      0.116      0.0  0.884     0.000
+ 2012-2016 -0.0  0.0  0.0          0.0      0.114      0.0  0.886    -0.000
+ 2013-2017  0.0  0.0  0.0          0.0      0.120      0.0  0.880     0.000
+ 2014-2018 -0.0 -0.0 -0.0         -0.0      0.066      0.0  0.934     0.000
+ 2015-2019  0.0  0.0 -0.0          0.0      0.302     -0.0  0.693     0.004
+ 2016-2020  0.0  0.0 -0.0         -0.0      0.455     -0.0  0.545     0.000
+ 2017-2021  0.0  0.0 -0.0         -0.0      0.312     -0.0  0.688     0.000)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The two tables show how \textbf{tangency portfolio weights} behave in
+each 5-year window:
+
+\begin{itemize}
+\item
+  \textbf{Unconstrained tangency (first table):}
+
+  Weights are huge (far from ±1) and often negative. For example, in
+  2014--2018 the portfolio is very long CAC and DAX, very short
+  Eurostoxx50, and strongly long SP500. This means the portfolio is
+  \textbf{heavily levered and very unstable over time}: small changes in
+  inputs lead to completely different long--short bets from one window
+  to the next.
+\item
+  \textbf{No-short tangency (second table):}
+
+  Almost all the weight goes systematically to \textbf{SP500}, with a
+  smaller share in \textbf{NIKKEI225}. The other indices are essentially
+  zero in every window (the ``--0.0'' values are just rounding). These
+  constrained portfolios are \textbf{much more stable but very
+  concentrated} in a couple of indices.
+\end{itemize}
+
+So, rolling the MV analysis through time clearly shows the trade-off:\\
+unconstrained MV gives extreme, unstable long--short portfolios, while
+adding a no-short constraint produces more realistic, but highly
+concentrated, allocations.
+
+    Before interpreting the no-short portfolios, we remove tiny numerical
+noise (weights of order \(10^{-16}\)) by setting very small coefficients
+to zero and rebuilding a cleaned DataFrame of long-only weights. This
+way, zeros really mean ``no position'' and the remaining weights are
+easier to interpret.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Clean no\PYZhy{}short weights: we just set tiny numerical values to zero}
+\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{values}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1e\PYZhy{}10}\PY{p}{,}
+                                     \PY{l+m+mi}{0}\PY{p}{,}
+                                     \PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+
+\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean}\PY{p}{,}
+                                            \PY{n}{index}\PY{o}{=}\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+                                            \PY{n}{columns}\PY{o}{=}\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+
+\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean\PYZus{}df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+           TSX  CAC  DAX  Eurostoxx50  NIKKEI225  FTSE100     SP500  IBOVESPA
+2010-2014  0.0  0.0  0.0          0.0   0.123354      0.0  0.876646  0.000000
+2011-2015  0.0  0.0  0.0          0.0   0.115577      0.0  0.884423  0.000000
+2012-2016  0.0  0.0  0.0          0.0   0.114084      0.0  0.885916  0.000000
+2013-2017  0.0  0.0  0.0          0.0   0.120050      0.0  0.879950  0.000000
+2014-2018  0.0  0.0  0.0          0.0   0.065745      0.0  0.934255  0.000000
+2015-2019  0.0  0.0  0.0          0.0   0.302376      0.0  0.693289  0.004335
+2016-2020  0.0  0.0  0.0          0.0   0.454591      0.0  0.545220  0.000189
+2017-2021  0.0  0.0  0.0          0.0   0.311639      0.0  0.688361  0.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The cleaned no-short tangency weights over the rolling 5-year windows
+show a very clear pattern:
+
+\begin{itemize}
+\tightlist
+\item
+  In \textbf{every window}, the portfolio is almost entirely split
+  between \textbf{SP500} and \textbf{NIKKEI225}. The weight on SP500 is
+  always between about \(0.55\) and \(0.93\), and the rest goes to
+  NIKKEI225.
+\item
+  All the other indices (TSX, CAC, DAX, Eurostoxx50, FTSE100)
+  consistently have \textbf{weight \(0\)}.
+\item
+  IBOVESPA only gets a \textbf{tiny} positive weight in 2015--2019 and
+  2016--2020 (around \(0.4\%\) and \(0.02\%\)), which is basically
+  negligible.
+\end{itemize}
+
+So the long-only tangency portfolio is very stable over time and heavily
+concentrated in SP500 (with NIKKEI225 as a smaller satellite position),
+while the other indices are never attractive enough in terms of
+risk--return to enter the optimal MV portfolio under the no-short
+constraint.
+
+    To visualise how unstable the mean--variance solution is over time, we
+now track the weight of a single asset - the S\&P 500 - across all
+5-year windows. The plot below shows its weight in the unconstrained
+tangency portfolio and in the no-short tangency portfolio, so we can see
+how leverage and short-selling change the behaviour of the optimiser
+through time.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} SP500 weight in unconstrained tangency portfolio}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}
+    \PY{n}{tan\PYZus{}uncon\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+    \PY{n}{tan\PYZus{}uncon\PYZus{}weights\PYZus{}df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+    \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{o}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency unconstrained}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} SP500 weight in no\PYZhy{}short tangency portfolio}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}
+    \PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean\PYZus{}df}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+    \PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean\PYZus{}df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+    \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{o}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency no\PYZhy{}short}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500 weight in tangency portfolio (5\PYZhy{}year rolling windows)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Window}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Portfolio weight}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_103_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The figure shows that the SP500 weight in the \textbf{unconstrained}
+tangency portfolio is very unstable and often well above (1). This means
+the optimiser is using leverage and short positions in the other indices
+to finance an oversized long position in the SP500.
+
+By contrast, in the \textbf{no-short} tangency portfolio the SP500
+weight stays between roughly (0.55) and (0.95) and moves much more
+smoothly across windows. The rolling exercise therefore confirms that
+the standard Markowitz solution is highly sample-sensitive and levered,
+whereas the long-only solution remains strongly tilted to the SP500 but
+in a more stable and realistic way.
+
+    \hypertarget{comparison-with-market-cap-based-weights}{%
+\subsubsection{3.3 Comparison with market cap-based
+weights}\label{comparison-with-market-cap-based-weights}}
+
+Finally, we compare our mean--variance tangency portfolios with a more
+realistic benchmark: a portfolio weighted by the market capitalization
+of each index. The Excel file provides these market-cap shares in the
+sheet \texttt{market\_cap}. We read these weights, align them with our
+eight indices, and compare them to the tangency portfolios in the last
+5-year window (2017-2021).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Read the market\PYZus{}cap sheet}
+\PY{n}{mkt\PYZus{}raw} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}excel}\PY{p}{(}\PY{n}{FILE}\PY{p}{,} \PY{n}{sheet\PYZus{}name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{market\PYZus{}cap}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{mkt\PYZus{}raw}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{n+nb}{str}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{mkt\PYZus{}raw}\PY{o}{.}\PY{n}{columns}\PY{p}{]}
+
+\PY{n}{mkt\PYZus{}raw}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+   Unnamed: 0  SPTSX INDEX  CAC INDEX  DAX INDEX  SX5E INDEX  NKY INDEX  \textbackslash{}
+0         NaN     0.041834    0.04318   0.036197    0.090955   0.092523
+
+   UKX INDEX  SPX INDEX  IBOV INDEX
+0   0.081589   0.602344    0.011378
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The \texttt{market\_cap} sheet gives us one row of benchmark weights by
+index. It shows a very concentrated universe: the S\&P 500 alone
+represents about \textbf{60\%} of total market cap, while the other
+developed markets are each in the single digits, and Brazil is just a
+bit above \textbf{1\%}.
+
+Next, we rename and reorder these entries so that this market-cap
+portfolio can be directly compared to our mean-variance tangency
+portfolios.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Take the first (and only) row of weights}
+\PY{n}{mkt\PYZus{}row} \PY{o}{=} \PY{n}{mkt\PYZus{}raw}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{labels}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unnamed: 0}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We map Excel column names to our index names}
+\PY{n}{mapping} \PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SPTSX INDEX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{TSX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CAC INDEX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CAC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAX INDEX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SX5E INDEX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Eurostoxx50}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NKY INDEX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NIKKEI225}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{UKX INDEX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FTSE100}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SPX INDEX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SP500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IBOV INDEX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IBOVESPA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+\PY{p}{\PYZcb{}}
+
+\PY{n}{mkt\PYZus{}weights} \PY{o}{=} \PY{n}{mkt\PYZus{}row}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{n}{mapping}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We put it in order to be in the same order as \PYZdq{}asset\PYZdq{}}
+\PY{n}{mkt\PYZus{}weights} \PY{o}{=} \PY{n}{mkt\PYZus{}weights}\PY{o}{.}\PY{n}{reindex}\PY{p}{(}\PY{n}{assets}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We normalize just in case...}
+\PY{n}{mkt\PYZus{}weights} \PY{o}{=} \PY{n}{mkt\PYZus{}weights} \PY{o}{/} \PY{n}{mkt\PYZus{}weights}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{mkt\PYZus{}weights}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+TSX            0.041834
+CAC            0.043180
+DAX            0.036197
+Eurostoxx50    0.090955
+NIKKEI225      0.092523
+FTSE100        0.081589
+SP500          0.602344
+IBOVESPA       0.011378
+Name: 0, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Re-expressing the Excel row as a \texttt{pandas} Series, we now have the
+\textbf{market-cap weights} in exactly the same format as our other
+portfolios. The picture is very skewed: the S\&P 500 still dominates
+with about \textbf{60\%} of total weight, the main developed markets
+(TSX, CAC, DAX, Eurostoxx50, Nikkei, FTSE100) each get only 4--9\%, and
+\textbf{IBOVESPA} stays tiny at just above \textbf{1\%}.
+
+This Series is what we will now line up against the tangency portfolio
+weights.
+
+    To make the comparison concrete, we now focus on the last 5-year window
+(2017-2021). We extract the tangency weights for that window, both with
+and without short-selling, and place them side by side with the
+market-cap weights in a single DataFrame. This will let us see, index by
+index, how far the mean--variance portfolios are from a simple
+market-cap benchmark.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Tangency weights in the last 5\PYZhy{}year window (2017–2021)}
+\PY{n}{w\PYZus{}mv\PYZus{}uncon\PYZus{}last}   \PY{o}{=} \PY{n}{tan\PYZus{}uncon\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2017\PYZhy{}2021}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{w\PYZus{}mv\PYZus{}noshort\PYZus{}last} \PY{o}{=} \PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2017\PYZhy{}2021}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Comparison with market\PYZhy{}cap weights}
+\PY{n}{compare\PYZus{}weights} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MarketCap}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{mkt\PYZus{}weights}\PY{p}{,}  \PY{c+c1}{\PYZsh{} serie built from market\PYZhy{}cap}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MV\PYZus{}Tangency\PYZus{}Uncon\PYZus{}2017\PYZus{}2021}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{w\PYZus{}mv\PYZus{}uncon\PYZus{}last}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MV\PYZus{}Tangency\PYZus{}NoShort\PYZus{}2017\PYZus{}2021}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{w\PYZus{}mv\PYZus{}noshort\PYZus{}last}\PY{p}{,}
+\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{assets}\PY{p}{)}
+
+\PY{n}{compare\PYZus{}weights}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+             MarketCap  MV\_Tangency\_Uncon\_2017\_2021  \textbackslash{}
+TSX           0.041834                    -0.549505
+CAC           0.043180                     5.453498
+DAX           0.036197                     2.210759
+Eurostoxx50   0.090955                    -6.922410
+NIKKEI225     0.092523                     0.632892
+FTSE100       0.081589                    -1.006031
+SP500         0.602344                     1.599128
+IBOVESPA      0.011378                    -0.418332
+
+             MV\_Tangency\_NoShort\_2017\_2021
+TSX                               0.000000
+CAC                               0.000000
+DAX                               0.000000
+Eurostoxx50                       0.000000
+NIKKEI225                         0.311639
+FTSE100                           0.000000
+SP500                             0.688361
+IBOVESPA                          0.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The table compares three sets of weights for the 2017-2021 window:
+
+\begin{itemize}
+\item
+  The \textbf{market-cap portfolio} is diversified across all indices
+  but heavily tilted to the US: about 60\% in the S\&P 500, with most
+  other indices between roughly 3--9\% and a tiny allocation to Brazil.
+\item
+  The \textbf{unconstrained tangency portfolio} is extremely aggressive.
+  It takes very large leveraged longs in \textbf{CAC}, \textbf{DAX} and
+  \textbf{SP500}, financed by big short positions in
+  \textbf{Eurostoxx50}, \textbf{FTSE100}, \textbf{TSX} and
+  \textbf{IBOVESPA}. This is the classic Markowitz pathology when we
+  allow unlimited short-selling and rely on noisy sample means.
+\item
+  The \textbf{no short-sale tangency portfolio} is much more realistic:
+  it puts about 69\% in \textbf{SP500} and 31\% in \textbf{NIKKEI225},
+  with zero weight on the other indices. Compared to the market-cap
+  benchmark it is still very concentrated (mainly US + Japan), but it
+  avoids the huge short positions and leverage of the unconstrained
+  solution.
+\end{itemize}
+
+    To visualise these differences more clearly, we now plot the three sets
+of weights (market-cap, unconstrained tangency, and no-short tangency)
+for the 2017-2021 window on a single bar chart. This makes it easier to
+see, for each index, how far the mean-variance portfolios move away from
+the simple market-cap allocation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{assets}\PY{p}{)}\PY{p}{)}
+\PY{n}{width} \PY{o}{=} \PY{l+m+mf}{0.25}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{width}\PY{p}{,} \PY{n}{compare\PYZus{}weights}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MarketCap}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} 
+        \PY{n}{width}\PY{o}{=}\PY{n}{width}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Market\PYZhy{}cap}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{compare\PYZus{}weights}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MV\PYZus{}Tangency\PYZus{}Uncon\PYZus{}2017\PYZus{}2021}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} 
+        \PY{n}{width}\PY{o}{=}\PY{n}{width}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MV tangency (unconstrained)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{x} \PY{o}{+} \PY{n}{width}\PY{p}{,} \PY{n}{compare\PYZus{}weights}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MV\PYZus{}Tangency\PYZus{}NoShort\PYZus{}2017\PYZus{}2021}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} 
+        \PY{n}{width}\PY{o}{=}\PY{n}{width}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MV tangency (no\PYZhy{}short)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{assets}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Portfolio weight}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Market\PYZhy{}cap vs MV tangency portfolios (2017–2021)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_114_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The bar chart makes the comparison very clear. The \textbf{market-cap}
+portfolio is well diversified across all indices, with a dominant but
+not extreme weight on the S\&P 500. By contrast, the
+\textbf{unconstrained tangency} portfolio loads huge long and short
+positions on a few indices (large long in CAC and DAX, very large short
+in Eurostoxx50, etc.), which is completely unrealistic from a practical
+point of view.
+
+The \textbf{no-short tangency} portfolio sits much closer to the
+market-cap benchmark: it is still tilted towards the S\&P 500 and
+NIKKEI225, but without the extreme leverage and short positions. This
+nicely illustrates how adding a simple non-negativity constraint can
+turn the theoretical Markowitz solution into something that looks much
+more like a realistic equity allocation.
+
+    \hypertarget{sharpe-ratios-over-time}{%
+\subsubsection{3.4 Sharpe ratios over
+time}\label{sharpe-ratios-over-time}}
+
+So far we have focused on the portfolio \textbf{weights}. To see how
+meaningful these portfolios actually are, it is also useful to track
+their \textbf{Sharpe ratios} over time. For each 5-year window we
+already computed the tangency portfolio under:
+
+\begin{itemize}
+\tightlist
+\item
+  the \textbf{unconstrained} Markowitz model (short-selling allowed),
+  and\\
+\item
+  the \textbf{no short-sale} version (weights constrained to be
+  non-negative).
+\end{itemize}
+
+In this section we plot the Sharpe ratio of both tangency portfolios
+across all rolling windows. This shows whether the very extreme
+unconstrained portfolios actually deliver a consistently higher
+risk-adjusted performance, or whether the more realistic no-short
+portfolios achieve similar Sharpe ratios with much less leverage and
+concentration.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Collect Sharpe ratios for each 5\PYZhy{}year window}
+\PY{n}{sharpe\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unconstrained}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{tan\PYZus{}uncon\PYZus{}stats\PYZus{}df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sharpe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NoShort}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{tan\PYZus{}noshort\PYZus{}stats\PYZus{}df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sharpe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{window\PYZus{}labels}\PY{p}{)}
+
+\PY{n}{sharpe\PYZus{}df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+           Unconstrained   NoShort
+2010-2014       1.995667  0.834794
+2011-2015       2.061726  0.696750
+2012-2016       2.053157  0.988011
+2013-2017       2.086428  1.199801
+2014-2018       1.484669  0.499447
+2015-2019       1.731560  0.789048
+2016-2020       1.519060  0.779839
+2017-2021       1.534876  0.894899
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{sharpe\PYZus{}df}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+         \PY{n}{sharpe\PYZus{}df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unconstrained}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+         \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{o}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+         \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency unconstrained}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{sharpe\PYZus{}df}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+         \PY{n}{sharpe\PYZus{}df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NoShort}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+         \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{o}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+         \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tangency no\PYZhy{}short}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Sharpe ratios of tangency portfolios (5\PYZhy{}year rolling windows)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Window}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Sharpe ratio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Assignment-1_files/Assignment-1_118_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The figure tracks the Sharpe ratio of the tangency portfolio in each
+5-year window, with and without short-selling.
+
+Across all windows, the \textbf{unconstrained} portfolio delivers a
+higher Sharpe ratio (around 1.5-2.1), while the \textbf{no-short}
+version stays in the 0.7-1.2 range. Both specifications follow a similar
+pattern over time: performance is strongest in the early windows, drops
+sharply around 2014-2018, and then recovers.
+
+So allowing short-selling does improve risk-adjusted performance, but
+the gain is not explosive, especially compared to how extreme the
+unconstrained weights are. In practice, the long-only portfolios achieve
+reasonably high Sharpe ratios without requiring huge leverage.
+
+    To get a sense of how \emph{stable} these portfolios are over time, we
+compute the portfolio \textbf{turnover} between consecutive 5-year
+windows.
+
+For each strategy (unconstrained and no-short), the function
+\texttt{turnover} measures \(\frac{1}{2}\sum_i |w_{i,t} - w_{i,t-1}|\)
+between windows, so high values mean the optimizer is radically
+reshuffling positions from one period to the next.
+
+We then compare \texttt{turn\_uncon} and \texttt{turn\_noshort} to see
+how much the no-short constraint helps to stabilise the weights.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{turnover}\PY{p}{(}\PY{n}{weights\PYZus{}df}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} sum of |w\PYZus{}t \PYZhy{} w\PYZus{}\PYZob{}t\PYZhy{}1\PYZcb{}| / 2 for each window transition}
+    \PY{n}{arr} \PY{o}{=} \PY{n}{weights\PYZus{}df}\PY{o}{.}\PY{n}{values}
+    \PY{n}{to} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{arr}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{arr}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+    \PY{k}{return} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{to}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{weights\PYZus{}df}\PY{o}{.}\PY{n}{index}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{turn\PYZus{}uncon}  \PY{o}{=} \PY{n}{turnover}\PY{p}{(}\PY{n}{tan\PYZus{}uncon\PYZus{}weights\PYZus{}df}\PY{p}{)}
+\PY{n}{turn\PYZus{}noshort} \PY{o}{=} \PY{n}{turnover}\PY{p}{(}\PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean\PYZus{}df}\PY{p}{)}
+
+\PY{n}{turn\PYZus{}uncon}\PY{p}{,} \PY{n}{turn\PYZus{}noshort}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+(2011-2015     4.808523
+ 2012-2016     5.073856
+ 2013-2017     0.994292
+ 2014-2018    12.750338
+ 2015-2019     6.660629
+ 2016-2020     2.885531
+ 2017-2021     4.366548
+ dtype: float64,
+ 2011-2015    0.007778
+ 2012-2016    0.001493
+ 2013-2017    0.005967
+ 2014-2018    0.054306
+ 2015-2019    0.240966
+ 2016-2020    0.152214
+ 2017-2021    0.143141
+ dtype: float64)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The turnover numbers confirm how unstable the unconstrained Markowitz
+solution is.
+
+For the \textbf{unconstrained tangency portfolio}, turnover is often
+well above 1 (and even above 10 in 2014-2018), which means the portfolio
+is completely reshuffled from one window to the next.
+
+By contrast, the \textbf{no-short tangency portfolio} has very low
+turnover: values stay close to zero for the early windows and only rise
+moderately (around 0.15--0.24) in the last years. This shows that
+imposing \(w_i \ge 0\) not only removes extreme long--short bets, but
+also makes the allocation much more stable over time.
+
+    \hypertarget{x-bonus-riskreturn-comparison-with-the-market-cap-portfolio}{%
+\subsubsection{3.x Bonus: Risk--return comparison with the market-cap
+portfolio}\label{x-bonus-riskreturn-comparison-with-the-market-cap-portfolio}}
+
+As a final check, we compare the realised risk--return profile of three
+portfolios over the last window (2017-2021): the market-cap portfolio,
+the unconstrained tangency portfolio, and the no-short tangency
+portfolio. This shows whether the more ``aggressive'' Markowitz
+allocations actually deliver a better in-sample Sharpe ratio than a
+simple market-cap benchmark.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} We rcompute annualised mean and covariance for the last window (2017–2021) }
+\PY{n}{start\PYZus{}date} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2017\PYZhy{}01\PYZhy{}01}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{end\PYZus{}date}   \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2021\PYZhy{}12\PYZhy{}31}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{window\PYZus{}1721} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{start\PYZus{}date}\PY{p}{:}\PY{n}{end\PYZus{}date}\PY{p}{]}
+
+\PY{n}{mu\PYZus{}daily\PYZus{}1721}    \PY{o}{=} \PY{n}{window\PYZus{}1721}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{values}
+\PY{n}{Sigma\PYZus{}daily\PYZus{}1721} \PY{o}{=} \PY{n}{window\PYZus{}1721}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{values}
+
+\PY{n}{mu\PYZus{}1721}    \PY{o}{=} \PY{n}{mu\PYZus{}daily\PYZus{}1721} \PY{o}{*} \PY{n}{ann\PYZus{}factor}
+\PY{n}{Sigma\PYZus{}1721} \PY{o}{=} \PY{n}{Sigma\PYZus{}daily\PYZus{}1721} \PY{o}{*} \PY{n}{ann\PYZus{}factor}
+
+\PY{c+c1}{\PYZsh{} Build the 3 portfolios\PYZsq{} weights for that window}
+\PY{c+c1}{\PYZsh{} mkt\PYZus{}weights is the Series we constructed from the \PYZsq{}market\PYZus{}cap\PYZsq{} sheet}
+\PY{n}{w\PYZus{}mkt\PYZus{}last}     \PY{o}{=} \PY{n}{mkt\PYZus{}weights}\PY{o}{.}\PY{n}{values}                       \PY{c+c1}{\PYZsh{} market\PYZhy{}cap portfolio}
+\PY{n}{w\PYZus{}uncon\PYZus{}last}   \PY{o}{=} \PY{n}{tan\PYZus{}uncon\PYZus{}weights\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2017\PYZhy{}2021}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}      \PY{c+c1}{\PYZsh{} unconstrained tangency}
+\PY{n}{w\PYZus{}noshort\PYZus{}last} \PY{o}{=} \PY{n}{tan\PYZus{}noshort\PYZus{}weights\PYZus{}clean\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2017\PYZhy{}2021}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}  \PY{c+c1}{\PYZsh{} no\PYZhy{}short tangency}
+
+\PY{c+c1}{\PYZsh{} Compute (return, vol, Sharpe) for each}
+\PY{n}{ret\PYZus{}mkt}\PY{p}{,} \PY{n}{vol\PYZus{}mkt}\PY{p}{,} \PY{n}{sh\PYZus{}mkt} \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w\PYZus{}mkt\PYZus{}last}\PY{p}{,}     \PY{n}{mu\PYZus{}1721}\PY{p}{,} \PY{n}{Sigma\PYZus{}1721}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+\PY{n}{ret\PYZus{}uc}\PY{p}{,}  \PY{n}{vol\PYZus{}uc}\PY{p}{,}  \PY{n}{sh\PYZus{}uc}  \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w\PYZus{}uncon\PYZus{}last}\PY{p}{,}   \PY{n}{mu\PYZus{}1721}\PY{p}{,} \PY{n}{Sigma\PYZus{}1721}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+\PY{n}{ret\PYZus{}ns}\PY{p}{,}  \PY{n}{vol\PYZus{}ns}\PY{p}{,}  \PY{n}{sh\PYZus{}ns}  \PY{o}{=} \PY{n}{portfolio\PYZus{}stats}\PY{p}{(}\PY{n}{w\PYZus{}noshort\PYZus{}last}\PY{p}{,} \PY{n}{mu\PYZus{}1721}\PY{p}{,} \PY{n}{Sigma\PYZus{}1721}\PY{p}{,} \PY{n}{rf}\PY{o}{=}\PY{n}{rf}\PY{p}{)}
+
+\PY{n}{sharpe\PYZus{}compare} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ann\PYZus{}return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{n}{ret\PYZus{}mkt}\PY{p}{,} \PY{n}{ret\PYZus{}uc}\PY{p}{,} \PY{n}{ret\PYZus{}ns}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ann\PYZus{}vol}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}    \PY{p}{[}\PY{n}{vol\PYZus{}mkt}\PY{p}{,} \PY{n}{vol\PYZus{}uc}\PY{p}{,} \PY{n}{vol\PYZus{}ns}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sharpe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}     \PY{p}{[}\PY{n}{sh\PYZus{}mkt}\PY{p}{,} \PY{n}{sh\PYZus{}uc}\PY{p}{,} \PY{n}{sh\PYZus{}ns}\PY{p}{]}\PY{p}{,}
+    \PY{p}{\PYZcb{}}\PY{p}{,}
+    \PY{n}{index}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MarketCap}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MV\PYZus{}Tangency\PYZus{}Uncon}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MV\PYZus{}Tangency\PYZus{}NoShort}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+\PY{p}{)}
+
+\PY{n}{sharpe\PYZus{}compare}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\begin{Verbatim}[commandchars=\\\{\}]
+                     ann\_return   ann\_vol    sharpe
+MarketCap              0.134005  0.175058  0.765489
+MV\_Tangency\_Uncon      0.491154  0.319996  1.534876
+MV\_Tangency\_NoShort    0.148207  0.165613  0.894899
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The table below compares the performance of three portfolios over
+2017-2021:
+
+\begin{itemize}
+\item
+  \textbf{MarketCap}: annual return ≈ \(13.4\%\), volatility ≈
+  \(17.5\%\), Sharpe ≈ \(0.77\).
+\item
+  \textbf{Unconstrained tangency (MV\_Tangency\_Uncon)}: very high
+  annual return (≈ \(49.1\%\)) but also much higher risk (volatility ≈
+  \(32.0\%\)), with a Sharpe ratio around \(1.53\).
+\item
+  \textbf{No-short tangency (MV\_Tangency\_NoShort)}: annual return ≈
+  \(14.8\%\), volatility ≈ \(16.6\%\), Sharpe ≈ \(0.89\).
+\end{itemize}
+
+This confirms the pattern seen in the weights:
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{unconstrained Markowitz portfolio} offers the highest
+  Sharpe ratio, but only by taking on a lot more risk and extreme
+  long--short positions.
+\item
+  The \textbf{no-short tangency portfolio} slightly improves on the
+  market-cap Sharpe ratio and keeps risk at a similar level, with a much
+  more realistic, long-only allocation.
+\item
+  The \textbf{market-cap portfolio} sits in between: lower efficiency
+  than the theoretical tangency portfolio, but very reasonable risk and
+  no leverage or short-selling.
+\end{itemize}
+
+    \hypertarget{conclusion}{%
+\subsection{Conclusion}\label{conclusion}}
+
+In Question 3, the rolling 5-year windows make the message very clear:
+the \textbf{unconstrained} tangency portfolio is extremely unstable.
+Small changes in estimated returns and covariances lead to big shifts in
+weights and high turnover from one window to the next. With the
+\textbf{no short-sale constraint}, the portfolios are much more stable
+over time and look much closer to something an actual investor could
+hold.
+
+Taken together with Questions 1 and 2, the whole assignment shows the
+same story:\\
+- The data are not perfectly Gaussian or i.i.d.,\\
+- Unconstrained Markowitz can produce very high theoretical Sharpe
+ratios, but with crazy, levered, long--short positions,\\
+- Adding realistic constraints (like \(w_i \ge 0\)) and comparing to a
+simple market-cap portfolio brings us back to something much more
+sensible.
+
+So in the end, mean--variance optimisation is a useful theoretical tool,
+but in practice it really needs to be combined with constraints and
+simple benchmarks if we want portfolios that are both \emph{efficient on
+paper} and \emph{investable in reality}.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
